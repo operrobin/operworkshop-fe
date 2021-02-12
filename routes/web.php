@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'PageController@splashScreen');
+
+Route::get('/intro', 'PageController@introductionScreen');
+
+/**
+ * Main Functions
+ */
+Route::get('/booking', 'PageController@bookingScreen');
