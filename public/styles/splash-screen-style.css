@@ -1,0 +1,19 @@
+body{
+    background-color: #D60000;
+
+    height: 100vh !important;
+    width: 100vw !important;
+}
+
+#content{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#content img{
+    max-width: 35vw !important;
+}
