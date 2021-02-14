@@ -10,7 +10,7 @@ use Session;
 
 class PageController extends Controller
 {
-    public function splashScreen(Request $request){
+    public function splashScreen(){
         $agent = new Agent();
 
         if($agent->isPhone())
