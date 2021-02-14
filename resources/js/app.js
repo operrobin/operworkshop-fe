@@ -1,4 +1,4 @@
-require('./bootstrap');
+// require('./bootstrap');
 
 /**
  * PWA Service worker settings
