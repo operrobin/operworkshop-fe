@@ -14,6 +14,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group([
+        "prefix" => "auth"
+    ], function(){
+        Route::post('login', 'Api\AuthController@authentication');
+        
+        Route::post('send-otp', 'Api\AuthController@sendOTP');
+    });
+
+Route::group(["prefix" => "workshop"], function(){
+    Route::get('', 'Api\WorkshopController@getWorkshopByType');
+});
+
+Route::group(["prefix" => "vehicle"], function(){
+    Route::get('', 'Api\VehicleController@getVehicle');
+
+    Route::get('/type', 'Api\VehicleController@getVehicleTypes');
+});
+
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
