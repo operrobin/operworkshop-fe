@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\DataTranserObject\BaseResponse;
+use App\DataTransferObject\BaseResponse;
 
 use App\Model\CustomerOper;
+use App\Model\PhoneOTP;
+
+use Session;
 
 class AuthController extends Controller
 {
@@ -37,9 +40,19 @@ class AuthController extends Controller
                     ->get()
                     ->first();
 
-        if(empty($customer)){
-            $customer = new CustomerOper();
-        }
+        /**
+         * Send OTP in here
+         */
+
+        /**
+         * Put customer's phone to Session
+         */
+        Session::put('customer_phone', $request->get('phone_number'));
+        
+        return BaseResponse::ok(
+            null,
+            "OTP Sent."
+        );
     }
 
     
@@ -57,6 +70,22 @@ class AuthController extends Controller
         if ($v->fails()){
             return BaseResponse::error($v->getMessageBag()->first(), 500);
         }
+
+        $otp = PhoneOTP
+                ::where('phone', $request->get('phone'))
+                ->where('otp_code', $request->get('otp'))
+                ->get()
+                ->first();
+
+        if(empty($otp)){
+            return BaseResponse::error(
+                "OTP Code or Phone Number Not Found"
+            );
+        }
+
+        /**
+         * Save Phone to Session
+         */
 
         
     }
