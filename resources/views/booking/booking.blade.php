@@ -225,7 +225,7 @@
 </script>
 
 <script 
-    src="https://maps.googleapis.com/maps/api/js?key={{ env('MIX_GOOGLE_MAPS_API_KEY') }}&callback=initMap" async defer>
+    src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_APP_KEY') }}&callback=initMap" async defer>
 </script>
 
 <script type="text/javascript"
