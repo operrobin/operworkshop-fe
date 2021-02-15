@@ -9,4 +9,4 @@ importScripts(
 /**
  * @link https://stackoverflow.com/a/66120107/9614906
  */
-workbox.precaching.precacheandRoute(self.__WB_MANIFEST);
+workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
