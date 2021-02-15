@@ -1,5 +1,7 @@
 // require('./bootstrap');
 
+window.axios = require('axios/dist/axios.js');
+
 /**
  * PWA Service worker settings
  * @link https://shareurcodes.com/blog/how-to-easily-convert-your-existing-laravel-application-into-a-progressive-web-app-by-using-workbox
