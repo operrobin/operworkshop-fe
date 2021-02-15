@@ -15,12 +15,24 @@
                         <div class="input-group-prepen  border-bottom">
                             <span class="input-group-text phone-code border-0  bg-white" id="basic-addon1">+62</span>
                         </div>
-                        <input required minlength="9" maxlength="15" type="text" class="form-control phone-input input-number-only" autofocus aria-label="Username"
-                            aria-describedby="basic-addon1">
+                        <input 
+                            required 
+                            minlength="9" 
+                            maxlength="15" 
+                            type="text" 
+                            class="form-control phone-input input-number-only" 
+                            autofocus 
+                            aria-label="Username"
+                            aria-describedby="basic-addon1"
+                            id="otp-phone-input" />
                     </div>
                 </div>
 
-                <button class="btn btn-next mb-3 w-100 rounded-pill btn-oper mt-5">Selanjutnya</button>
+                <button 
+                    onclick="sendOTP();" 
+                    class="btn btn-next mb-3 w-100 rounded-pill btn-oper mt-5">
+                    Selanjutnya
+                </button>
 
                 <a href="">
                     <small class="text-muted">Syarat & Ketentuan OPER Workshop baca di sini</small>
@@ -72,6 +84,15 @@
         </div>
     </section>
 
+
+
+{{-- Services --}}
+<script
+    src="{{ mix('/js/services.js') }}"
+    type="text/javascript">
+</script>
+
+{{-- Page Logic --}}
 <script 
     type="text/javascript"
     src="{{ asset('/scripts/otp.js') }}">
@@ -87,4 +108,5 @@
     src="{{ asset('/library/cukx-validate.min.js') }}" 
     type="text/javascript">
 </script>
+
 @endsection
