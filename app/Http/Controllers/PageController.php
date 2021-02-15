@@ -23,6 +23,10 @@ class PageController extends Controller
         return view('introduction-screen/introduction-screen');
     }
 
+    public function authenticateScreen(){
+        return view('otp/otp');
+    }
+
     public function bookingScreen(){
         return view('booking/booking');
     }
