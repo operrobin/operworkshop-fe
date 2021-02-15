@@ -20,4 +20,7 @@ Route::get('/intro', 'PageController@introductionScreen');
 /**
  * Main Functions
  */
+
+Route::get('/authenticate', 'PageController@authenticateScreen');
+
 Route::get('/booking', 'PageController@bookingScreen');
