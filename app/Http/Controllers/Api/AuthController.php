@@ -10,6 +10,8 @@ use App\DataTransferObject\BaseResponse;
 use App\Model\CustomerOper;
 use App\Model\PhoneOTP;
 
+use App\Helper\OTPHelper;
+
 use Session;
 
 class AuthController extends Controller
@@ -43,15 +45,16 @@ class AuthController extends Controller
         /**
          * Send OTP in here
          */
-
-        /**
-         * Put customer's phone to Session
-         */
-        Session::put('customer_phone', $request->get('phone_number'));
+        
+        $helper = new OTPHelper();
+        $helper->triggerOTP(
+            $request->get('phone_number'),
+            empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
+        );
         
         return BaseResponse::ok(
             null,
-            "OTP Sent."
+            "OTP Sent to {$request->get('phone_number')}."
         );
     }
 
@@ -59,7 +62,7 @@ class AuthController extends Controller
 
     /**
      * sendOTP
-     * An API to sendOTP via Whatsapp Number
+     * An API to check OTP validity.
      */
     public function sendOTP(Request $request){
         $v = validator()->make($request->all(), [
@@ -83,11 +86,19 @@ class AuthController extends Controller
             );
         }
 
-        /**
-         * Save Phone to Session
-         */
+        $customer = CustomerOper
+                    ::where('customer_hp', $request->get('phone_number'))
+                    ->get()
+                    ->first();
 
+        if(empty($customer))
         
+        Session::put('customer_phone', $request->get('phone_number'));
+
+        return BaseResponse::ok(
+            Session::get('customer_phone'),
+            "Authentication successful"
+        );
     }
 
 }
