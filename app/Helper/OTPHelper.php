@@ -4,6 +4,8 @@ namespace App\Helper;
 
 use App\Model\PhoneOTP;
 
+use App\Messanging\Producer\SendOTP;
+
 class OTPHelper{
 
     /**
@@ -58,9 +60,11 @@ class OTPHelper{
         /**
          * Message Broker to send OTP to Node JS Server
          */
-
-        /**
-         * 
-         */
+        $producer = new SendOTP();
+        $producer->produce(
+            $otp->id,
+            $otp->phone,
+            $otp->otp_code
+        );
     }
 }
