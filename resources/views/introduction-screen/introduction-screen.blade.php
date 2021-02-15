@@ -144,12 +144,12 @@
         <div class="position-bottom">
             <p class="text-color-oper font-big">Kendaraan anda sudah <br> waktunya diservis?</p>
 
-            <a href="/">
-
+            <a href="/authenticate">
+                <button class="btn btn-next btn-oper rounded-pill px-4 py-3 my-3">
+                    Booking servis sekarang
+                </button>
             </a>
-            <button class="btn btn-next btn-oper rounded-pill px-4 py-3 my-3">
-                Booking servis sekarang
-            </button>
+
             
             <br>
 
