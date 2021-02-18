@@ -63,10 +63,6 @@ class AuthController extends Controller
                 );
                 break;
         }
-        $helper->triggerOTP(
-            $request->get('phone_number'),
-            empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
-        );
         
         return BaseResponse::ok(
             null,
