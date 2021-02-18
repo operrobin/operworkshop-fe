@@ -20,10 +20,19 @@
 
     @include('template/script')
 
-    @yield('js_after')
-
 </head>
 <body>
+    @include('template/loader')
+
     @yield('content')
+
+    <script 
+        src="{{ asset('/js/app.js') }}"
+        type="text/javascript">
+    </script>
+
+
+    @yield('js_after')
+
 </body>
 </html>

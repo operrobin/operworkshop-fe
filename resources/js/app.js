@@ -1,4 +1,8 @@
-// require('./bootstrap');
+/**
+ * Put .env in here
+ */
+
+window.APP_URL = process.env.MIX_APP_URL;
 
 window.axios = require('axios/dist/axios.js');
 

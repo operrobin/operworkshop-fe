@@ -21,7 +21,9 @@ mix.js(
     .combine([
         'resources/js/services/api-handler.js',
         'resources/js/services/auth-services.js',
-        'resources/js/services/booking-services.js'
+        'resources/js/services/booking-services.js',
+        'resources/js/services/maps-services.js',
+        'resources/js/services/user-services.js'
     ], 
         'public/js/services.js')
     .sass(
@@ -30,7 +32,3 @@ mix.js(
     );
 
 mix.disableNotifications();
-
-mix.env(process.env.ENV_FILE);
-
-console.log(JSON.stringify(process.env.ENV_FILE));
