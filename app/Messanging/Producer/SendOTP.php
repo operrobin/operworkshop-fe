@@ -12,7 +12,7 @@ class SendOTP extends RabbitMQConfig{
      * @static
      * @var string
      */
-    const SEND_OTP_PRODUCER = "BE_OTP_SEND";
+    const SEND_OTP_PRODUCER_TOPIC = "BE_OTP_SEND_TOPIC";
 
     public function __construct(){
         $this->initializeConnection();
@@ -27,14 +27,14 @@ class SendOTP extends RabbitMQConfig{
         /**
          * @link https://www.rabbitmq.com/tutorials/tutorial-two-php.html
          */
-        $this->channel->queue_declare(self::SEND_OTP_PRODUCER, false, true, false, false);
+        $this->channel->queue_declare(self::SEND_OTP_PRODUCER_TOPIC, false, true, false, false);
 
-        $message = new AMPQMessage(
-            (object) [
+        $message = new AMQPMessage(
+            json_encode([
                 "customer_id" => $customer_id, 
                 "phone" => $phone,
                 "otp_code" => $otp_code
-            ],
+            ]),
             [
                 "delivery_mode" => AMQPMessage::DELIVERY_MODE_PERSISTENT
             ]
@@ -43,7 +43,7 @@ class SendOTP extends RabbitMQConfig{
         $this->channel->basic_publish(
             $message,
             '',
-            self::SEND_OTP_PRODUCER
+            self::SEND_OTP_PRODUCER_TOPIC
         );
 
         $this->close();
