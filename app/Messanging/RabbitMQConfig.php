@@ -4,6 +4,8 @@ namespace App\Messanging;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
+use Symfony\Component\Console\Output\ConsoleOutput;
+
 abstract class RabbitMQConfig{
 
     /**
@@ -30,5 +32,10 @@ abstract class RabbitMQConfig{
     protected function close(){
         $this->channel->close();
         $this->con->close();
+    }
+
+    protected function printLog($message){
+        $out = new ConsoleOutput();
+        $out->writeln($message);
     }
 }
