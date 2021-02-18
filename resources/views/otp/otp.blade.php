@@ -70,12 +70,18 @@
                                 </form>
                             </div>
                         </div>
+
+                        <div id="error-message" class="row d-none justify-content-center">
+                            <p class="text-color-oper">
+                                OTP Salah. Silahkan coba kembali.
+                            </p>
+                        </div>
                     </div>
 
                     
                 </div>
 
-                <button class="btn mb-3 w-100 rounded-pill btn-oper mt-5">konfirmasi</button>
+                <button onclick="login();" class="btn mb-3 w-100 rounded-pill btn-oper mt-5">konfirmasi</button>
 
                 <a href="">
                     <small class="text-muted">Syarat & Ketentuan OPER Workshop baca di sini</small>

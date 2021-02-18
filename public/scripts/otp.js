@@ -49,12 +49,61 @@ function onFocusEvent(index) {
  */
 const otp_phone_input = document.getElementById('otp-phone-input');
 
-function sendOTP(){
-  window.location.replace('/booking');
+const code_box_1 = document.getElementById('codeBox1');
+const code_box_2 = document.getElementById('codeBox2');
+const code_box_3 = document.getElementById('codeBox3');
+const code_box_4 = document.getElementById('codeBox4');
 
-  return 0;
+const otp_error_message = document.getElementById('error-message');
+
+function sendOTP(){
   phone = otp_phone_input.value;
 
-  new AuthServices().Authentication(phone);
+  new AuthServices().authentication(phone);
 }
 
+function login(){
+   otp_code = `${code_box_1.value}${code_box_2.value}${code_box_3.value}${code_box_4.value}`;
+
+   response = new AuthServices().sendOtp(otp_phone_input.value, otp_code);
+
+   response.then(res => {
+      if(res.data.status){
+
+         /**
+          * @issue 
+          * The web middleware not permit me to using axios to send request.
+          */
+         $.ajax({
+            "type": "POST",
+            "url": "/set-web-session",
+            "data": {
+               "key": "customer_phone",
+               "value": otp_phone_input.value
+            }
+         }).done(
+            window.location.href = "/booking"
+         );
+
+      }else{
+        code_box_1.value = "";
+        code_box_2.value = "";
+        code_box_3.value = "";
+        code_box_4.value = "";
+
+        otp_error_message.classList.remove("d-none");
+        otp_error_message.classList.add("d-flex");
+      }
+   });
+}
+
+/*
+ |--------------------------------------------------------------------------
+ | Permission Part
+ |--------------------------------------------------------------------------
+ |
+ | This part is used for any Permission related logic.
+ |
+ */
+
+navigator.permissions.query({name: 'geolocation'});
