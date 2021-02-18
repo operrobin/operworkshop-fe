@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\DataTranserObject\BaseResponse;
+use App\DataTransferObject\BaseResponse;
 
 use App\Model\MasterBrand;
 use App\Model\VehicleName;
@@ -18,9 +18,20 @@ class VehicleController extends Controller
      * 
      * @return array MasterBrand
      */
-    public function getVehicleTypes(){
+    public function getMasterBrands(Request $request){
+        $v = validator()->make($request->all(), [
+            "type" => "required|in:1,2"
+        ]); 
+
+        if($v->fails()){
+            return BaseResponse::error($v->getMessageBag()->first(), 500);
+        }
+
         return BaseResponse::ok(
-            MasterBrand::all()
+            MasterBrand
+                ::where('brand_type', $request->get('type'))
+                ->get(),
+            "Success getting all master brands data"
         );
     }
 

@@ -1,6 +1,26 @@
 @extends('template.master')
 @section('title', 'Booking')
+@section('css_after')
+    <style>
+        /**
+         * Kuantitas dulu deh baru kualitas. 
+         */
+        #workshop-list{
+            max-height: 300px !important;
+            overflow: scroll !important;
+        }
+
+    </style>
+@endsection
 @section('content')
+
+{{--
+    DOM PURPOSE
+    --}}
+
+<input type="hidden" id="brand_id" />
+<input type="hidden" id="bengkel_type" value="1" />
+<input type="hidden" id="vehicle_type" value="1" />
 
 {{-- STEP 1 - INFORMASI PENGGUNA --}}
 
@@ -28,7 +48,7 @@
         <div class="container">
             <div class="form-group">
                 <label for="" class="text-muted">NAME</label>
-                <input type="text" class="form-control form-border">
+                <input id="informasi-pengguna-name-textbox" type="text" class="form-control form-border cant-pre-space">
             </div>
             
             <div class="form-group">
@@ -38,19 +58,18 @@
                     <div class="input-group-prepen ">
                         <span class="input-group-text border-0  bg-white" id="basic-addon1">+62</span>
                     </div>
-                    <input type="text" class="form-control form-border" autofocus aria-label="Username" aria-describedby="basic-addon1">
+                    <input id="informasi-pengguna-phone-textbox" type="text" class="form-control form-border input-number-only" autofocus aria-label="Username" aria-describedby="basic-addon1">
                 </div>
             </div>
     
             <div class="form-group">
                 <label for="" class="text-muted mt-4">EMAIL</label>
-                <input type="text" class="form-control form-border">
+                <input id="informasi-pengguna-email-textbox" type="text" class="form-control form-border cant-space">
             </div>
     
-            <button type="button" class="btn btn-next btn-danger mt-5 rounded-pill w-100">selanjutnya</button>
+            <button id="informasi-pengguna-next-button" type="button" class="btn btn-next btn-oper mt-5 rounded-pill w-100" disabled>Selanjutnya</button>
         </div>
     </div>
-
 {{-- STEP 2 - INFORMASI KENDARAAN --}}
 
     <div class="content">
@@ -79,29 +98,35 @@
             <div class="form-group">
                 <label for="" class="text-muted mt-4">JENIS KENDARAAN</label>
                 <div class="switch-field">
-                    <input type="radio" id="switch_left" name="switch_2" value="yes" checked />
+                    <input type="radio" id="switch_left" checked name="informasi-kendaraan-type-radio" value="1" checked="checked" />
                     <label for="switch_left">MOBIL</label>
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
+                    <input type="radio" id="switch_right" name="informasi-kendaraan-type-radio" value="2" />
                     <label for="switch_right">MOTOR</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="" class="text-muted mt-4">MERK KENDARAAN</label>
-                <div class="switch-field merk">
+                <div id="informasi-kendaraan-brand-list" class="switch-field merk">
                     <input type="radio" id="switch_left" name="switch_2" value="yes" checked />
                     <label class="non-radius" for="switch_left">MOBIL</label>
+
+                    <input type="radio" id="switch_right" name="switch_2" value="no" />
+                    <label class="non-radius" for="switch_right">MOTOR</label>
+
+                    <input type="radio" id="switch_right" name="switch_2" value="no" />
+                    <label class="non-radius" for="switch_right">MOTOR</label>
+
+                    <input type="radio" id="switch_right" name="switch_2" value="no" />
+                    <label class="non-radius" for="switch_right">MOTOR</label>
+
                     <input type="radio" id="switch_right" name="switch_2" value="no" />
                     <label class="non-radius" for="switch_right">MOTOR</label>
                     <input type="radio" id="switch_right" name="switch_2" value="no" />
                     <label class="non-radius" for="switch_right">MOTOR</label>
+
                     <input type="radio" id="switch_right" name="switch_2" value="no" />
                     <label class="non-radius" for="switch_right">MOTOR</label>
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
+
                     <input type="radio" id="switch_right" name="switch_2" value="no" />
                     <label class="non-radius" for="switch_right">MOTOR</label>
                 </div>
@@ -109,14 +134,14 @@
 
             <div class="form-group">
                 <label for="" class="text-muted mt-4">TIPE KENDARAAN</label>
-                <input type="text" class="form-control form-border">
+                <input type="text" id="informasi-kendaraan-tipe-kendaraan" class="form-control form-border cant-pre-space">
             </div>
             <div class="form-group">
                 <label for="" class="text-muted mt-4">NOMOR POLISI</label>
-                <input type="text" class="form-control form-border">
+                <input type="text" id="informasi-kendaraan-nomor-polisi" class="form-control form-border cant-pre-space">
             </div>
 
-            <button type="button" class="btn btn-next mb-4 btn-danger mt-5 rounded-pill w-100">selanjutnya</button>
+            <button type="button" id="informasi-kendaraan-next-button" disabled class="btn btn-next mb-4 btn-oper mt-5 rounded-pill w-100">Selanjutnya</button>
             </div>
         </div>
 
@@ -150,10 +175,18 @@
             <div class="form-group">
                 <label for="" class="text-muted mt-4">PILIH BENGKEL</label>
                 <div class="switch-field">
-                    <input type="radio" id="switch_left" name="switch_2" value="yes" checked />
-                    <label for="switch_left">BENGKEL RESMI</label>
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label for="switch_right">BENGKEL UMUM</label>
+                    <input type="radio" id="official_workshop" name="informasi-bengkel-type-radio" value="yes" checked />
+                    <label for="official_workshop">BENGKEL RESMI</label>
+                    <input type="radio" id="open_workshop" name="informasi-bengkel-type-radio" value="no" />
+                    <label for="open_workshop">BENGKEL UMUM</label>
+                </div>
+            </div>
+
+            <div id="maps-warning" class="d-none row justify-content-center mb-3">
+                <div>
+                    <button id="show-maps-instruction-btn" class="btn btn-oper">
+                        Lokasi anda tidak terhubung. Silahkan mengizinkan akses lokasi untuk menggunakan fitur ini.
+                    </button>
                 </div>
             </div>
 
@@ -161,7 +194,7 @@
 
             <p class="text-muted mt-4">LOKASI BENGKEL</p>
 
-            <div class="">
+            <div id="workshop-list">
                 <div style="font-size: 13px;" class="row mx-1 my-2 card-review align-items-center active">
                     <div style="height: 100px; width: 100%; background-color: lightgray;" class="col-4"></div>
                     <div class="col">
@@ -220,15 +253,38 @@
     </div>
 </div>
 
+@include('booking/location-prompt')
+
 <script 
     src="{{ asset('/scripts/script.js') }}">
+</script>
+
+{{-- Services --}}
+<script
+    src="{{ mix('/js/services.js') }}"
+    type="text/javascript">
+</script>
+
+<script type="text/javascript"
+    src="{{ asset('/scripts/booking.js') }}">
+</script>
+
+<script type="text/javascript"
+    src="{{ asset('/scripts/view-model/booking-view-model.js') }}">
 </script>
 
 <script 
     src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_APP_KEY') }}&callback=initMap" async defer>
 </script>
 
-<script type="text/javascript"
-    src="{{ asset('/scripts/booking.js') }}">
+<script type="text/javascript">
+    loadInformasiPengguna("{{ Session::get('customer_phone') }}");
+    loadMasterBrands();
+</script>
+
+{{-- Cukx Validate --}}
+<script
+    src="{{ asset('/library/cukx-validate.min.js') }}" 
+    type="text/javascript">
 </script>
 @endsection

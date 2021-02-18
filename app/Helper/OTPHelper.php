@@ -6,6 +6,10 @@ use App\Model\PhoneOTP;
 
 use App\Messanging\Producer\SendOTP;
 
+use App\Services\TelegramServices;
+
+use Log;
+
 class OTPHelper{
 
     /**
@@ -60,11 +64,52 @@ class OTPHelper{
         /**
          * Message Broker to send OTP to Node JS Server
          */
-        $producer = new SendOTP();
-        $producer->produce(
-            $otp->id,
-            $otp->phone,
-            $otp->otp_code
+        try{
+            $producer = new SendOTP();
+            $producer->produce(
+                $otp->id,
+                $otp->phone,
+                $otp->otp_code
+            );
+        }catch(\Throwable $e){
+            Log::alert("Failed to send OTP trough broker: ".$e->getMessage());
+            $this->fakeOTP($phone_number, $type);
+        }
+
+    }
+
+    /**
+     * Plan B
+     * fakeOTP
+     * A function to send OTP trigger to Telegram Services.
+     */
+    public function fakeOTP($phone_number, $type){
+        /**
+         * Create new otp_verifications
+         */
+        $otp = new PhoneOTP();
+        $otp->phone = $phone_number;
+        $otp->otp_code = $this->generateCode(self::OTP_LENGTH_SETTING);
+        $otp->otp_type = $type;
+        $otp->created_at = new \DateTime('now');
+        $otp->save();
+
+        $telegram = new TelegramServices();
+        $telegram->sendMessage(
+            "Your OTP Code for phone number {$otp->phone} is {$otp->otp_code}"
         );
+    }
+
+    /**
+     * updateOTPSentStatus
+     * A function to update phone otp as sent to 1.
+     * 
+     * @param integer id => Reference to id in otp_verifications
+     *  @see \App\Model\PhoneOTP::class
+     */
+    public function updateOTPSentStatus($id){
+        $otp = PhoneOTP::find($id);
+        $otp->is_sent = 1;
+        $otp->save();
     }
 }

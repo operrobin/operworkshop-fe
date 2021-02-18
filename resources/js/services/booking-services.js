@@ -9,10 +9,7 @@ class BookingServices{
     
     async getWorkshop(type = 1){
         return axios.get(
-            process.env.MIX_APP_URL + "/api/workshop",
-            {
-                "type": type
-            }
+            APP_URL + `/api/workshop?type=${type}`
         ).catch(
             (err) => {
                 console.log(err);
@@ -20,11 +17,10 @@ class BookingServices{
         );
     }
 
-    async getVehicleTypes(){
+    async getVehicleTypes(type){
         try {
-            return axios.get(
-                process.env.MIX_APP_URL + "/api/vehicle/type",
-                null
+            return await axios.get(
+                APP_URL + `/api/vehicle/brands?type=${type}`
             );
         } catch (err) {
             console.log(err);
@@ -33,10 +29,7 @@ class BookingServices{
 
     async getVehicle(type = 1){
         return axios.get(
-            process.env.MIX_APP_URL + "/api/vehicle",
-            {
-                "type": type
-            }
+            APP_URL + `/api/vehicle?type=${type}`
         ).catch(
             (err) => {
                 console.log(err);

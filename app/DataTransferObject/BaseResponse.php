@@ -16,7 +16,7 @@ class BaseResponse{
     }
 
     public static function ok($data, $message, $code = 200){
-        return response(
+        return response()->json(
             new BaseResponse(
                 $data,
                 $message,
@@ -26,13 +26,12 @@ class BaseResponse{
     }
 
     public static function error($message, $code = 500, $data = null){
-        return response(
+        return response()->json(
             new BaseResponse(
                 $data,
                 $message,
                 $code
             )
-            , $code
         );
     }
 }

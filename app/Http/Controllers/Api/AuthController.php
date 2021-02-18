@@ -47,6 +47,22 @@ class AuthController extends Controller
          */
         
         $helper = new OTPHelper();
+        
+        switch(env('OTP_MODE')){
+            case "FAKE":
+                $helper->fakeOTP(
+                    $request->get('phone_number'),
+                    empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
+                );
+                break;
+            
+            default:
+                $helper->triggerOTP(
+                    $request->get('phone_number'),
+                    empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
+                );
+                break;
+        }
         $helper->triggerOTP(
             $request->get('phone_number'),
             empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
@@ -66,7 +82,7 @@ class AuthController extends Controller
      */
     public function sendOTP(Request $request){
         $v = validator()->make($request->all(), [
-            "phone" => "required|exists:customer_opers,customer_hp",
+            "phone" => "required|exists:otp_verifications,phone",
             "otp" => "required"
         ]);
 
@@ -82,23 +98,13 @@ class AuthController extends Controller
 
         if(empty($otp)){
             return BaseResponse::error(
-                "OTP Code or Phone Number Not Found"
+                "OTP Code Invalid"
             );
         }
-
-        $customer = CustomerOper
-                    ::where('customer_hp', $request->get('phone_number'))
-                    ->get()
-                    ->first();
-
-        if(empty($customer))
-        
-        Session::put('customer_phone', $request->get('phone_number'));
 
         return BaseResponse::ok(
             Session::get('customer_phone'),
             "Authentication successful"
         );
     }
-
 }

@@ -24,3 +24,5 @@ Route::get('/intro', 'PageController@introductionScreen');
 Route::get('/authenticate', 'PageController@authenticateScreen');
 
 Route::get('/booking', 'PageController@bookingScreen');
+
+Route::post('/set-web-session', 'CrossSessionController@setWebSession');

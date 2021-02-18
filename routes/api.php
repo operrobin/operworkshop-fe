@@ -22,6 +22,12 @@ Route::group([
         Route::post('send-otp', 'Api\AuthController@sendOTP');
     });
 
+Route::group([
+    "prefix" => "user"
+], function(){
+    Route::get('', 'Api\UserController@getUserByPhone');
+});
+
 Route::group(["prefix" => "workshop"], function(){
     Route::get('', 'Api\WorkshopController@getWorkshopByType');
 });
@@ -29,12 +35,13 @@ Route::group(["prefix" => "workshop"], function(){
 Route::group(["prefix" => "vehicle"], function(){
     Route::get('', 'Api\VehicleController@getVehicle');
 
-    Route::get('/type', 'Api\VehicleController@getVehicleTypes');
+    Route::get('/brands', 'Api\VehicleController@getMasterBrands');
 });
 
-
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(["prefix" => "google"], function(){
+    Route::get('/get-workshop-near-me', 'Api\GoogleMapsController@getWorkshopNearMe');
 });
 
+Route::group(["prefix" => "booking"], function(){
+    Route::post('', 'Api\BookingController@makeOrder');
+});
