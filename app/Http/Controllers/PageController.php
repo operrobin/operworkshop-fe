@@ -13,13 +13,17 @@ class PageController extends Controller
     public function splashScreen(){
         $agent = new Agent();
 
-        if($agent->isPhone())
+        // if($agent->isPhone())
             return view('splash-screen/splash-screen-page-1');
 
-        return redirect("/intro");
+        // return redirect("/intro");
     }
 
     public function introductionScreen(){
+        if(Session::get('customer_phone') != null){
+            return redirect('/booking');
+        }
+
         return view('introduction-screen/introduction-screen');
     }
 
@@ -28,6 +32,10 @@ class PageController extends Controller
     }
 
     public function bookingScreen(){
+        if(Session::get('customer_phone') === null){
+            return redirect('/authenticate');
+        }
+
         return view('booking/booking');
     }
 }
