@@ -13,6 +13,14 @@ use App\Model\Workshop;
 
 class GoogleMapsController extends Controller
 {
+    /**
+     * getWorkshopNearMe
+     * 
+     * This API is for get all Workshops near Customer.
+     * 
+     * @param double lat
+     * @param double lng
+     */
     public function getWorkshopNearMe(Request $request){
         $v = validator()->make($request->all(), [
             "lat" => "required",
