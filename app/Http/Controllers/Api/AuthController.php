@@ -16,11 +16,6 @@ use Session;
 
 class AuthController extends Controller
 {
-
-    public function __construct(){
-
-    }
-
     /**
      * authentication
      * An API to login or signup by User's Phone Number, and send OTP to do login.
@@ -48,22 +43,19 @@ class AuthController extends Controller
         
         $helper = new OTPHelper();
         
-        switch(env('OTP_MODE')){
-            case "FAKE":
-                $helper->fakeOTP(
-                    $request->get('phone_number'),
-                    empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
-                );
-                break;
-            
-            default:
-                $helper->triggerOTP(
-                    $request->get('phone_number'),
-                    empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
-                );
-                break;
+
+        if(env('OTP_MODE') == "FAKE"){
+            $helper->fakeOTP(
+                $request->get('phone_number'),
+                empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
+            );
+        }else{
+            $helper->triggerOTP(
+                $request->get('phone_number'),
+                empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
+            );
         }
-        
+
         return BaseResponse::ok(
             null,
             "OTP Sent to {$request->get('phone_number')}."
