@@ -57,15 +57,29 @@ const code_box_4 = document.getElementById('codeBox4');
 const otp_error_message = document.getElementById('error-message');
 
 function sendOTP(){
-  phone = otp_phone_input.value;
+  let phone = otp_phone_input.value;
 
   new AuthServices().authentication(phone);
 }
 
-function login(){
-   otp_code = `${code_box_1.value}${code_box_2.value}${code_box_3.value}${code_box_4.value}`;
 
-   response = new AuthServices().sendOtp(otp_phone_input.value, otp_code);
+async function session_saver (otp) {
+
+   return await $.ajax({
+      "type": "POST",
+      "url": "/set-web-session",
+      "data": {
+         "key": "customer_phone",
+         "value": otp
+      }
+   });
+
+}
+
+function login(){
+   let otp_code = `${code_box_1.value}${code_box_2.value}${code_box_3.value}${code_box_4.value}`;
+
+   let response = new AuthServices().sendOtp(otp_phone_input.value, otp_code);
 
    response.then(res => {
       if(res.data.status){
@@ -74,16 +88,14 @@ function login(){
           * @issue 
           * The web middleware not permit me to using axios to send request.
           */
-         $.ajax({
-            "type": "POST",
-            "url": "/set-web-session",
-            "data": {
-               "key": "customer_phone",
-               "value": otp_phone_input.value
-            }
-         }).done(
-            window.location.href = "/booking"
-         );
+
+         session_saver(otp_phone_input.value)
+               .then(
+                  (ris) => {
+                     // console.log(ris);
+                     window.location.href = "/booking";
+                  }
+               );
 
       }else{
         code_box_1.value = "";

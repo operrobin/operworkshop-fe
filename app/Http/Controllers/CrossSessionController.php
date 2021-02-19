@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Session;
+use App\DataTransferObject\BaseResponse;
+
 
 class CrossSessionController extends Controller
 {
@@ -24,6 +26,9 @@ class CrossSessionController extends Controller
         );
         Session::save();
 
-        return 0;
+        return BaseResponse::ok(
+            Session::all(), 
+            "Success saving session."
+        );
     }
 }
