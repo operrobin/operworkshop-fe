@@ -7,8 +7,12 @@
 
 @endsection
 @section('content')
-    <div id="content">
-        <img src="{{ asset('logo/logo-258.png') }}" />
+    <div id="logo-content">
+        <img src="{{ asset('logo/logo-258.png') }}" alt="logo-image" />
+    </div>
+
+    <div id="workshop-content">
+        <img src="{{ asset('/assets/logo_operworkshop_putih.png') }}" alt="logo-image" />
     </div>
 
     <script
