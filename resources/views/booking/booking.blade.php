@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container mt-3">
             <div class="form-group">
                 <label for="" class="text-muted">NAME</label>
                 <input id="informasi-pengguna-name-textbox" type="text" class="form-control form-border cant-pre-space">
@@ -100,7 +100,7 @@
                 <div class="switch-field">
                     <input type="radio" id="switch_left" checked name="informasi-kendaraan-type-radio" value="1" checked="checked" />
                     <label for="switch_left">MOBIL</label>
-                    <input type="radio" id="switch_right" name="informasi-kendaraan-type-radio" value="2" />
+                    <input type="radio" disabled id="switch_right" name="informasi-kendaraan-type-radio" value="2" />
                     <label for="switch_right">MOTOR</label>
                 </div>
             </div>
