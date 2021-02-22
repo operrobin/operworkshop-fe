@@ -5,7 +5,7 @@ body{
     width: 100vw !important;
 }
 
-#content{
+#logo-content{
     margin: 0;
     position: absolute;
     top: 50%;
@@ -14,6 +14,20 @@ body{
     transform: translate(-50%, -50%);
 }
 
-#content img{
+#workshop-content{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+#logo-content img{
     max-width: 35vw !important;
+}
+
+#workshop-content img {
+    max-width: 90vw !important;
 }

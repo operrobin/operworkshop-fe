@@ -7,7 +7,7 @@
  |
  */    
 
-getCodeBoxElement = index => document.getElementById('codeBox' + index); 
+let getCodeBoxElement = index => document.getElementById('codeBox' + index); 
 
 function onKeyUpEvent(index, event) {
   const eventCode = event.which || event.keyCode;
@@ -26,7 +26,7 @@ function onKeyUpEvent(index, event) {
 }
 
 function onFocusEvent(index) {
-  for (item = 1; item < index; item++) {
+  for (let item = 1; item < index; item++) {
      const currentElement = getCodeBoxElement(item);
      if (!currentElement.value) {
           currentElement.focus();
@@ -48,6 +48,7 @@ function onFocusEvent(index) {
  * Const
  */
 const otp_phone_input = document.getElementById('otp-phone-input');
+const otp_confirmation_button = document.getElementById('konfirmasi-btn');
 
 const code_box_1 = document.getElementById('codeBox1');
 const code_box_2 = document.getElementById('codeBox2');
@@ -55,6 +56,14 @@ const code_box_3 = document.getElementById('codeBox3');
 const code_box_4 = document.getElementById('codeBox4');
 
 const otp_error_message = document.getElementById('error-message');
+
+otp_phone_input.addEventListener('keyup', (e) => {
+  if(otp_phone_input.value.length >= 9){
+   otp_confirmation_button.removeAttribute("disabled");
+  }else{
+   otp_confirmation_button.setAttribute('disabled', 'disabled');
+  }
+});
 
 function sendOTP(){
   let phone = otp_phone_input.value;

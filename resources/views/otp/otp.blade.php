@@ -29,6 +29,8 @@
                 </div>
 
                 <button 
+                    id="konfirmasi-btn"
+                    disabled
                     onclick="sendOTP();" 
                     class="btn btn-next mb-3 w-100 rounded-pill btn-oper mt-5">
                     Selanjutnya
@@ -57,13 +59,13 @@
                                     <div class="form-group">
                                         <label for="password" class="text-white">Enter 4 Digit Password</label>
                                         <div class="passcode-wrapper">
-                                            <input id="codeBox1" type="number" class="input-number-only" autofocus maxlength="1" onkeyup="onKeyUpEvent(1, event)"
+                                            <input id="codeBox1" type="text" class="input-number-only" autofocus maxlength="1" onkeyup="onKeyUpEvent(1, event)"
                                                 onfocus="onFocusEvent(1)">
-                                            <input id="codeBox2" type="number" class="input-number-only" maxlength="1" onkeyup="onKeyUpEvent(2, event)"
+                                            <input id="codeBox2" type="text" class="input-number-only" maxlength="1" onkeyup="onKeyUpEvent(2, event)"
                                                 onfocus="onFocusEvent(2)">
-                                            <input id="codeBox3" type="number" class="input-number-only" maxlength="1" onkeyup="onKeyUpEvent(3, event)"
+                                            <input id="codeBox3" type="text" class="input-number-only" maxlength="1" onkeyup="onKeyUpEvent(3, event)"
                                                 onfocus="onFocusEvent(3)">
-                                            <input id="codeBox4" type="number" class="input-number-only" maxlength="1" onkeyup="onKeyUpEvent(4, event)"
+                                            <input id="codeBox4" type="text" class="input-number-only" maxlength="1" onkeyup="onKeyUpEvent(4, event)"
                                                 onfocus="onFocusEvent(4)">
                                         </div>
                                     </div>
