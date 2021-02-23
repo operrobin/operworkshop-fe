@@ -219,3 +219,28 @@ initMap = () => {
   });
 }
 
+/**
+ * DOM for onclick Bengkel
+ */
+
+let markers = [];
+
+const markWorkshop = (lat, lng) => {
+  /**
+   * Clear markers
+   */
+  for(let i = 0; i < markers.length; i++){
+    markers[i].setMap(null);
+  }
+
+  /**
+   * Place marker to the location
+   */
+
+  markers.push(
+    new google.maps.Marker({
+      position: { lat: lat, lng: lng },
+      map
+    })
+  );
+}

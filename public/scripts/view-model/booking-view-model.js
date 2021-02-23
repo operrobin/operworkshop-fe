@@ -103,7 +103,7 @@ const informasi_bengkel_workshop_list = document.getElementById('workshop-list')
 const INFORMASI_BENGKEL_WORSKHOP_LIST_PRE_ID = `<div `;
 
 const INFORMASI_BENGKEL_INPUT_HTML = `
-       " onclick="selectWorkshop(this)" style="font-size: 13px;" class="row mx-1 my-2 card-review align-items-center">
+       " style="font-size: 13px;" class="row mx-1 my-2 card-review align-items-center">
             <div style="height: 100px; width: 100%; background-color: lightgray;" class="col-3"></div>
             <div class="col-6 d-block">
                 <p class="font-weight-bold ">
@@ -127,10 +127,12 @@ const INFORMASI_BENGKEL_APPEND_AFTER_RATING = `</div></div>`;
 
 function loadWorkshopNearby(lat, lng, bengkel_type, vehicle_type){
   
-  response = new MapsServices().getWorkshopNearMe(lat, lng, bengkel_type, vehicle_type);
+  response = new BookingServices().getWorkshop(lat, lng, bengkel_type, vehicle_type);
 
   response.then( res => {
-    result_set = res.data.data;
+    result_set = res.data.data.data;
+
+    console.log(result_set);
 
 
     /**
@@ -150,24 +152,17 @@ function loadWorkshopNearby(lat, lng, bengkel_type, vehicle_type){
        */
       informasi_bengkel_workshop_list.insertAdjacentHTML(
         'beforeend',
-        `<div id="w-${e.id}" aria-workshop-name="${e.workshop_name}" aria-workshop-address="${e.workshop_address}"`
+        `<div id="w-${e.id}" onclick="selectWorkshop(this); markWorkshop(${e.bengkel_lat}, ${e.bengkel_long});" aria-workshop-name="${e.bengkel_name}" aria-workshop-address="${e.bengkel_name}"`
         + INFORMASI_BENGKEL_INPUT_HTML 
-        + e.workshop_name 
+        + e.bengkel_name 
         + INFORMASI_BENGKEL_APPEND_AFTER_TITLE 
-        + e.workshop_address 
+        + e.bengkel_alamat 
         + INFORMASI_BENGKEL_APPEND_AFTER_ADDRESS 
-        + e.rating
+        + e.workshop_ratings
         + INFORMASI_BENGKEL_APPEND_AFTER_RATING
       );
 
-      /**
-       * Place marker to the location
-       */
-      new google.maps.Marker({
-          position: { lat: e.lat, lng: e.lng },
-          map,
-          title: e.workshop_name
-      });
+ 
       
     });
   });

@@ -7,9 +7,9 @@
 
 class BookingServices{
     
-    async getWorkshop(type = 1){
+    async getWorkshop(lat, lng, bengkel_type, vehicle_type){
         return axios.get(
-            APP_URL + `/api/workshop?type=${type}`
+            APP_URL + `/api/workshop/near-me?lat=${lat}&lng=${lng}&vehicle_type=${vehicle_type}&type=${bengkel_type}`
         ).catch(
             (err) => {
                 console.log(err);
