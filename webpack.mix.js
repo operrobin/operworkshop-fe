@@ -22,7 +22,6 @@ mix.js(
         'resources/js/services/api-handler.js',
         'resources/js/services/auth-services.js',
         'resources/js/services/booking-services.js',
-        'resources/js/services/maps-services.js',
         'resources/js/services/user-services.js'
     ], 
         'public/js/services.js')
