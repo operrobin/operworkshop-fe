@@ -172,62 +172,83 @@
                 </div>
             </div>
             <div class="container">
-            <div class="form-group">
-                <label for="" class="text-muted mt-4">PILIH BENGKEL</label>
-                <div class="switch-field">
-                    <input type="radio" id="official_workshop" name="informasi-bengkel-type-radio" value="yes" checked />
-                    <label for="official_workshop">BENGKEL RESMI</label>
-                    <input type="radio" id="open_workshop" name="informasi-bengkel-type-radio" value="no" />
-                    <label for="open_workshop">BENGKEL UMUM</label>
-                </div>
-            </div>
-
-            <div id="maps-warning" class="d-none row justify-content-center mb-3">
-                <div>
-                    <button id="show-maps-instruction-btn" class="btn btn-oper">
-                        Lokasi anda tidak terhubung. Silahkan mengizinkan akses lokasi untuk menggunakan fitur ini.
-                    </button>
-                </div>
-            </div>
-
-            <div id="show_maps" style="width: 100%;height:300px;"></div>
-
-            <p class="text-muted mt-4">LOKASI BENGKEL</p>
-
-            <div id="workshop-list">
-                <div style="font-size: 13px;" class="row mx-1 my-2 card-review align-items-center active">
-                    <div style="height: 100px; width: 100%; background-color: lightgray;" class="col-4"></div>
-                    <div class="col">
-                        <div class="d-flex">
-                            <p class="font-weight-bold ">AUTOLUX</p>
-                            <div class="review font-weight-bold text-center ml-2">
-                                <i style="color: rgb(255, 217, 5);" class="fas fa-star"></i>
-                                4.7
-                            </div>
-
-
-                        </div>
-                        <p style="font-size: 10px;" class="">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non consectetur ullam, vel in tempora nam iusto quia dolore sunt </p>
+                <div class="form-group">
+                    <label for="" class="text-muted mt-4">PILIH BENGKEL</label>
+                    <div class="switch-field">
+                        <input type="radio" id="official_workshop" name="informasi-bengkel-type-radio" value="yes" checked />
+                        <label for="official_workshop">BENGKEL RESMI</label>
+                        <input type="radio" id="open_workshop" name="informasi-bengkel-type-radio" value="no" />
+                        <label for="open_workshop">BENGKEL UMUM</label>
                     </div>
                 </div>
-                <div style="font-size: 13px;" class="row mx-1 my-2 card-review align-items-center">
-                    <div style="height: 100px; width: 100%; background-color: lightgray;" class="col-4"></div>
-                    <div class="col">
-                        <div class="d-flex">
-                            <p class="font-weight-bold ">AUTOLUX</p>
-                            <div class="review font-weight-bold text-center ml-2">
-                                <i style="color: rgb(255, 217, 5);" class="fas fa-star"></i>
-                                4.7
-                            </div>
 
+                <div class="form-group">
+                    <label for="" class="text-muted mt-4">ALAMAT</label>
+                    <input type="text" id="informasi-bengkel-customer-address-textbox" class="form-control form-border cant-pre-space">
+                </div>
 
-                        </div>
-                        <p style="font-size: 10px;" class="">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non consectetur ullam, vel in tempora nam iusto quia dolore sunt </p>
+                <div id="maps-warning" class="d-none row justify-content-center mb-3">
+                    <div>
+                        <button id="show-maps-instruction-btn" class="btn btn-oper">
+                            Lokasi anda tidak terhubung. Silahkan mengizinkan akses lokasi untuk menggunakan fitur ini.
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn mb-4 btn-danger mt-3 py-2 rounded-pill w-100">BOOKING</button>
+                <div id="show_maps" style="width: 100%;height:300px;"></div>
+
+                <div class="form-group">
+                    <label for="" class="text-muted mt-4">WAKTU BOOKING</label>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="date" id="informasi-bengkel-booking-date-datecontrol" class="form-control form-border cant-pre-space">
+                            
+                        </div>
+                        <div class="col-6">
+                            <input type="time" id="informasi-bengkel-booking-time-datecontrol" class="form-control form-border cant-pre-space">
+    
+                        </div>
+                    </div>
+                </div>
+
+
+                <p class="text-muted mt-4">LOKASI BENGKEL</p>
+
+                <div id="workshop-list">
+                    <div style="font-size: 13px;" class="row mx-1 my-2 card-review align-items-center active">
+                        <div style="height: 100px; width: 100%; background-color: lightgray;" class="col-4"></div>
+                        <div class="col">
+                            <div class="d-flex">
+                                <p class="font-weight-bold ">AUTOLUX</p>
+                                <div class="review font-weight-bold text-center ml-2">
+                                    <i style="color: rgb(255, 217, 5);" class="fas fa-star"></i>
+                                    4.7
+                                </div>
+
+
+                            </div>
+                            <p style="font-size: 10px;" class="">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non consectetur ullam, vel in tempora nam iusto quia dolore sunt </p>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px;" class="row mx-1 my-2 card-review align-items-center">
+                        <div style="height: 100px; width: 100%; background-color: lightgray;" class="col-4"></div>
+                        <div class="col">
+                            <div class="d-flex">
+                                <p class="font-weight-bold ">AUTOLUX</p>
+                                <div class="review font-weight-bold text-center ml-2">
+                                    <i style="color: rgb(255, 217, 5);" class="fas fa-star"></i>
+                                    4.7
+                                </div>
+
+
+                            </div>
+                            <p style="font-size: 10px;" class="">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non consectetur ullam, vel in tempora nam iusto quia dolore sunt </p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="bookingOrder();" type="button" data-toggle="modal" data-target="#exampleModal" class="btn mb-4 btn-danger mt-3 py-2 rounded-pill w-100">BOOKING</button>
             </div>
         </div>
 

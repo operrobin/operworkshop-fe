@@ -225,7 +225,9 @@ initMap = () => {
 
 let markers = [];
 
-const markWorkshop = (lat, lng) => {
+let informasi_bengkel_selected_workshop_id = null;
+
+const markWorkshop = (id, lat, lng) => {
   /**
    * Clear markers
    */
@@ -243,4 +245,6 @@ const markWorkshop = (lat, lng) => {
       map
     })
   );
+
+  informasi_bengkel_selected_workshop_id = id;
 }
