@@ -75,9 +75,51 @@ class GoogleMapsServices {
             "/place/nearbysearch/json",
             [
                 "location" => $lat.",".$lng,
-                "radius" => env('GOOGLE_MAPS_SEARCH_NEARBY_RADIUS_SETTING'),
+                "radius" => 10000,
                 "type" => "car_repair"
             ]
+        );
+    }
+
+    /**
+     * distanceMatrix
+     * A service to count distance between 2 coordinates
+     * 
+     * @link https://developers.google.com/maps/documentation/distance-matrix/overview
+     * 
+     * @param object from
+     *  Start point long lat object. This object must have these attributes below:
+     *      @param double lat
+     *      @param double lng
+     * 
+     * @param object to
+     *  End point long lat object. This object must have these attributes below:
+     *      @param double lat
+     *      @param double lng
+     * 
+     * In case you wanna test something:
+     * -6.3889885,106.9950572
+     * 
+     * @return double distance
+     */
+    public function distanceMatrix($from, $to){
+
+        return $this->googleMapsCallback(
+            "GET",
+            "/distancematrix/json",
+            [
+                "origins" => $from->lat.",".$from->lng,
+                "destinations" => $to->lat.",".$to->lng
+            ]
+        );
+    }
+    
+    public function check($ray){
+
+        return $this->googleMapsCallback(
+            "GET",
+            "/distancematrix/json",
+            $ray
         );
     }
 }

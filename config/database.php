@@ -91,6 +91,19 @@ return [
             'prefix_indexes' => true,
         ],
 
+        /**
+         * @link https://appdividend.com/2018/05/10/laravel-mongodb-crud-tutorial-with-example/
+         */
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'host' => env('MONGO_DB_HOST', '127.0.0.1'),
+            'port' => env('MONGO_DB_PORT', 27017),
+            'database' => env('MONGO_DB_DATABASE'),
+            'username' => env('MONGO_DB_USERNAME'),
+            'password' => env('MONGO_DB_PASSWORD'),
+            'options' => []
+        ]
+
     ],
 
     /*

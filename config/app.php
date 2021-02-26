@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -179,6 +179,11 @@ return [
          * @link https://github.com/jenssegers/agent
          */
         Jenssegers\Agent\AgentServiceProvider::class,
+
+        /**
+         * @link https://appdividend.com/2018/05/10/laravel-mongodb-crud-tutorial-with-example/
+         */
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
     ],
 
     /*

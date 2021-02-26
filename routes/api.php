@@ -30,6 +30,8 @@ Route::group([
 
 Route::group(["prefix" => "workshop"], function(){
     Route::get('', 'Api\WorkshopController@getWorkshopByType');
+    Route::get('/near-me', 'Api\WorkshopController@saveWorkshopNearMe');
+    Route::get('/by-batch-id', 'Api\WorkshopController@getNearbyWorkshopByBatchId');
 });
 
 Route::group(["prefix" => "vehicle"], function(){
@@ -45,3 +47,4 @@ Route::group(["prefix" => "google"], function(){
 Route::group(["prefix" => "booking"], function(){
     Route::post('', 'Api\BookingController@makeOrder');
 });
+

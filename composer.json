@@ -13,6 +13,7 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "jenssegers/agent": "^2.6",
+        "jenssegers/mongodb": "dev-develop",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "php-amqplib/php-amqplib": ">=2.9.0"
