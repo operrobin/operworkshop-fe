@@ -25,9 +25,9 @@ const jquery_informasi_pengguna_next_button = $('#informasi-pengguna-next-button
  * Selanjutnya Button Validation
  */
 jquery_informasi_pengguna_forms.on('keyup', (e) => {
-  name_val = jquery_informasi_pengguna_forms[0].value;
-  phone_val = jquery_informasi_pengguna_forms[1].value;
-  email_val = jquery_informasi_pengguna_forms[2].value;
+  var name_val = jquery_informasi_pengguna_forms[0].value;
+  var phone_val = jquery_informasi_pengguna_forms[1].value;
+  var email_val = jquery_informasi_pengguna_forms[2].value;
 
   if(name_val == ""){
     return;
@@ -59,7 +59,7 @@ const jquery_informasi_kendaraan_next_button = $('#informasi-kendaraan-next-butt
  * SCREW YOU JAVASCRIPT DOM !!!
  */
 jquery_vehicle_type_radio.on('change', (e) => {
-  value = e.currentTarget.value;
+  var value = e.currentTarget.value;
   loadMasterBrands(value);
   jquery_input_vehicle_type.val(value);
 });
@@ -77,9 +77,9 @@ function brandSwitchChange(e){
  * Informasi Kendaraan Form Validation
  */
 jquery_informasi_kendaraan_forms.on('keyup', (e) => {
-  brand_id = jquery_informasi_kendaraan_forms[0].value;
-  tipe_val = jquery_informasi_kendaraan_forms[1].value;
-  nomor_polisi_val = jquery_informasi_kendaraan_forms[2].value;
+  var brand_id = jquery_informasi_kendaraan_forms[0].value;
+  var tipe_val = jquery_informasi_kendaraan_forms[1].value;
+  var nomor_polisi_val = jquery_informasi_kendaraan_forms[2].value;
 
   if(brand_id == ""){
     return;
@@ -110,23 +110,20 @@ const jquery_informasi_bengkel_bengkel_type_radio = $('input[name=informasi-beng
 const jquery_informasi_bengkel_workshop_list = $('#workshop-list');
 
 jquery_informasi_bengkel_bengkel_type_radio.on('change', (e) => {
-  value = e.currentTarget.value;
+  var value = e.currentTarget.value;
   jquery_informasi_bengkel_bengkel_type.val(value);
+
+  removeMarkers();
+  loadWorkshopNearby(jquery_informasi_bengkel_bengkel_type.val(), value);
 });
 
 /**
  * Load Informasi Bengkel data once "Selanjutnya" button in "Informasi Kendaraan" clicked
  */
 jquery_informasi_kendaraan_next_button.on('click', () => {
-  getCurrentLocation().then(
-    res => {
-      loadWorkshopNearby(
-        res.coords.latitude,
-        res.coords.longitude,
-        jquery_informasi_bengkel_bengkel_type.val(),
-        jquery_input_vehicle_type.val()
-      );
-    }
+  loadWorkshopNearby(
+    jquery_informasi_bengkel_bengkel_type.val(),
+    jquery_input_vehicle_type.val()
   );
 });
 
@@ -143,8 +140,46 @@ function selectWorkshop(e){
 }
 
 /**
+ * Minimal date
+ */
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth() + 1; //January is 0!
+var yyyy = today.getFullYear();
+
+if(dd < 10){
+  dd = '0' + dd;
+}
+
+if(mm < 10){
+  mm = '0' + mm;
+} 
+
+today = yyyy + '-' + mm + '-' + dd;
+
+document
+  .getElementById('informasi-bengkel-booking-date-datecontrol')
+  .setAttribute('min', today);
+
+/**
+ * End minimal date
+ */
+
+/**
  * End of Informasi Bengkel Part 
  */
+
+ /**
+  * Exception Part
+  */
+
+let form_error = 0;
+
+const openErrorModal = () => {
+  $('#exampleModal').modal('show');
+  form_error = 1;
+}
 
 /*
  |--------------------------------------------------------------------------
@@ -177,6 +212,9 @@ navigator.permissions.query({name:'geolocation'}).then(function(res) {
   };
 });
 
+/**
+ * If location denied, show location_prompt_modal
+ */
 const checkLocationEnabled = () => {
   navigator.permissions.query({name: 'geolocation'}).then(
     (res) => {
@@ -204,13 +242,18 @@ const getCurrentLocation = async () => {
  */
 let map = null;
 
-initMap = () => {
+let selected_location = {
+  lat: null,
+  lng: null
+};
+
+function initMap () {
   const db = {lat: -6.1622882, lng: 106.7624412};
 
   getCurrentLocation().then(
     (res) => {
-      db.lat = res.coords.latitude;
-      db.lng = res.coords.longitude;
+      db.lat = selected_location.lat = res.coords.latitude;
+      db.lng = selected_location.lng = res.coords.longitude;
   
       map = new google.maps.Map(document.getElementById('show_maps'), {
         center: db,
@@ -228,12 +271,8 @@ let markers = [];
 let informasi_bengkel_selected_workshop_id = null;
 
 const markWorkshop = (id, lat, lng) => {
-  /**
-   * Clear markers
-   */
-  for(let i = 0; i < markers.length; i++){
-    markers[i].setMap(null);
-  }
+
+  removeMarkers();
 
   /**
    * Place marker to the location
@@ -247,4 +286,17 @@ const markWorkshop = (id, lat, lng) => {
   );
 
   informasi_bengkel_selected_workshop_id = id;
+  console.log(informasi_bengkel_selected_workshop_id);
+}
+
+  /**
+   * Clear markers
+   */
+const removeMarkers = () => {
+  for(let i = 0; i < markers.length; i++){
+    markers[i].setMap(null);
+  }
+
+  informasi_bengkel_selected_workshop_id = null;
+  console.log(informasi_bengkel_selected_workshop_id);
 }

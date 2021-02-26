@@ -19,7 +19,7 @@ const informasi_pengguna_next_button = document.getElementById('informasi-penggu
  * On Page load
  */
 function loadInformasiPengguna(phone){
-  response = new UserServices().getUserByPhone(phone);
+  var response = new UserServices().getUserByPhone(phone);
 
   response.then(res => {
     console.log(res);
@@ -58,7 +58,7 @@ const INPUT_LABEL_APPEND = `</label>`;
 const informasi_kendaraan_brand_list = document.getElementById('informasi-kendaraan-brand-list');
 
 function loadMasterBrands(type = DEFAULT_VEHICLE_TYPE_OPTIONS){
-  response = new BookingServices().getVehicleTypes(type);
+  var response = new BookingServices().getVehicleTypes(type);
   response.then( res => {
     /**
      * Remove brands list
@@ -70,7 +70,7 @@ function loadMasterBrands(type = DEFAULT_VEHICLE_TYPE_OPTIONS){
     /**
      * Append brands list with new ones.
      */
-    result_set = res.data.data;
+    var result_set = res.data.data;
     result_set.forEach( (e, i) => {
       informasi_kendaraan_brand_list.insertAdjacentHTML(
         'beforeend',
@@ -95,6 +95,51 @@ function loadMasterBrands(type = DEFAULT_VEHICLE_TYPE_OPTIONS){
 
 /**
  * Informasi Kendaraan Part 
+ */
+
+/**
+ * Batching MongoDB's Cache Data
+ */
+
+ /**
+  * @global
+  * @var integer? batch_id
+  */
+let batch_id = null;
+
+const getCacheBatchId = () => {
+  let response = new WorkshopServices().getWorkshopNearMe(
+    selected_location.lat,
+    selected_location.lng
+  );
+
+  response.then(
+    res => {
+      let result = res.data.data;
+      batch_id = result.batch_id;
+    }
+  );
+}
+
+/**
+ * Check if selected_location is already filled or not.
+ */
+const triggerGetBatchId = () => {
+  setTimeout(
+    () => {
+      if(selected_location.lat !== null){
+        getCacheBatchId();
+      }else{
+        triggerGetBatchId();
+      }
+    }, 2000
+  );
+}
+
+triggerGetBatchId();
+
+/**
+ * End of Batching MongoDB's Cache Data
  */
 
 const informasi_bengkel_workshop_list = document.getElementById('workshop-list');
@@ -125,14 +170,13 @@ const INFORMASI_BENGKEL_APPEND_AFTER_ADDRESS = `
 
 const INFORMASI_BENGKEL_APPEND_AFTER_RATING = `</div></div>`;
 
-function loadWorkshopNearby(lat, lng, bengkel_type, vehicle_type){
-  return 0;
-  
-  response = new BookingServices().getWorkshop(lat, lng, bengkel_type, vehicle_type);
+function loadWorkshopNearby(bengkel_type, vehicle_type){
+
+  let response = new WorkshopServices().getWorkshopByBatchId(batch_id, bengkel_type, vehicle_type);
 
   response.then( res => {
-    result_set = res.data.data.data;
-
+    let result_set = res.data.data;
+    console.log("Response Workshop Nearby "+ JSON.stringify(res));
     console.log(result_set);
 
 
@@ -179,74 +223,88 @@ function loadWorkshopNearby(lat, lng, bengkel_type, vehicle_type){
   */
 
   const bookingOrder = () => {
-    getCurrentLocation().then(
-      (res) => {
-        let request_payload = {
-          /**
-           * @see booking-view-model.js: 12 to 16
-           */
-          customer_name: informasi_pengguna_name_textbox.value, 
-          customer_phone: informasi_pengguna_phone_textbox.value,
-          customer_email: informasi_pengguna_email_textbox.value, 
+    let request_payload = {
+      /**
+       * @see booking-view-model.js: 12 to 16
+       */
+      customer_name: informasi_pengguna_name_textbox.value, 
+      customer_phone: informasi_pengguna_phone_textbox.value,
+      customer_email: informasi_pengguna_email_textbox.value, 
 
-          /**
-           * @see booking.blade.php:187
-           */
-          customer_address: document.getElementById('informasi-bengkel-customer-address-textbox').value,
+      /**
+       * @see booking.blade.php:187
+       */
+      customer_address: document.getElementById('informasi-bengkel-customer-address-textbox').value,
+      
+      /**
+       * @obj booking_date @see booking.blade.php:205
+       * @obj booking_time @see booking.blade.php:209
+       */
+      booking_date: document.getElementById('informasi-bengkel-booking-date-datecontrol').value,
+      booking_time: document.getElementById('informasi-bengkel-booking-time-datecontrol').value,
+      
+      /**
+       * @obj vehicle_type          @see booking.blade.php:23
+       * @obj vehicle_brand_id      @see booking.blade.php:21
+       * @obj vehicle_name          @see booking.blade.php:137
+       * @obj vehicle_license_plat  @see booking.blade.php:141
+       */
+      vehicle_type: document.getElementById('vehicle_type').value,
+      vehicle_brand_id: document.getElementById('brand_id').value,
+      vehicle_name: document.getElementById('informasi-kendaraan-tipe-kendaraan').value,
+      vehicle_license_plat: document.getElementById('informasi-kendaraan-nomor-polisi').value,
+      
+      /**
+       * @see booking.blade.php:22 
+       */
+      bengkel_type: document.getElementById('bengkel_type').value,
+
+      /**
+       * @see booking.js:245
+       */
+      customer_lat: selected_location.lat,
+      customer_lng: selected_location.lng,
+
+      /**
+       * @see booking.js:271
+       */
+      workshop_id: informasi_bengkel_selected_workshop_id,
+    };
+
+    /**
+     * Check data validity. ?is anything null?
+     */
+    var validate = Object.values(request_payload);
+
+    console.log(validate);
+
+    /**
+     * @see booking.js:177
+     */
+    form_error = 0;
+
+    validate.forEach(
+      (e, i) => {
+        if(e == null || e == undefined){
           
           /**
-           * @obj booking_date @see booking.blade.php:205
-           * @obj booking_time @see booking.blade.php:209
+           * If form incomplete, prompt to check again.
            */
-          booking_date: document.getElementById('informasi-bengkel-booking-date-datecontrol').value,
-          booking_time: document.getElementById('informasi-bengkel-booking-time-datecontrol').value,
-          
-          /**
-           * @obj vehicle_type          @see booking.blade.php:23
-           * @obj vehicle_brand_id      @see booking.blade.php:21
-           * @obj vehicle_name          @see booking.blade.php:137
-           * @obj vehicle_license_plat  @see booking.blade.php:141
-           */
-          vehicle_type: document.getElementById('vehicle_type').value,
-          vehicle_brand_id: document.getElementById('brand_id').value,
-          vehicle_name: document.getElementById('informasi-kendaraan-tipe-kendaraan').value,
-          vehicle_license_plat: document.getElementById('informasi-kendaraan-nomor-polisi').value,
-          
-          /**
-           * @see booking.blade.php:22 
-           */
-          bengkel_type: document.getElementById('bengkel_type').value,
-
-          /**
-           * From res
-           */
-          customer_lat: res.coords.latitude,
-          customer_lng: res.coords.longitude,
-
-          /**
-           * @see booking.js:228
-           */
-          workshop_id: informasi_bengkel_selected_workshop_id,
-        };
-
-        /**
-         * Check data validity. ?is anything null?
-         */
-        var validate = Object.values(request_payload);
-
-        console.log(validate);
-
-        validate.forEach(
-          (e, i) => {
-            if(e == null || e == undefined){
-              console.log("error index number "+ i)
-            }else{
-              console.log(e);
-            }
-          }
-        );
-
+          console.log("error index number "+ i);
+          openErrorModal();
+          return;
+        }else{
+          console.log(e);
+        }
       }
     );
 
+    if(form_error === 1){
+      return;
+    }
+
+    let response = new BookingServices().createBooking(request_payload);
+    response.then( res => {
+      console.log(JSON.stringify(res));
+    });
   }
