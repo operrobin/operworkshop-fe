@@ -75,7 +75,7 @@ class GoogleMapsServices {
             "/place/nearbysearch/json",
             [
                 "location" => $lat.",".$lng,
-                "radius" => env('GOOGLE_MAPS_SEARCH_NEARBY_RADIUS_SETTING'),
+                "radius" => 10000,
                 "type" => "car_repair"
             ]
         );
