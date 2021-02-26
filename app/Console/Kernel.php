@@ -5,7 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-use App\Console\Commands\ReceiveSentOTP;
+use App\Console\Commands\LoginOperTask;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        ReceiveSentOTP::class
+        LoginOperTask::class
     ];
 
     /**
@@ -26,9 +26,38 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-        $schedule->command('otp:receive-sent-otp')
-            ->everyMinute();
+        /*
+         |--------------------------------------------------------------------------
+         | CRON JOB OPERTASK
+         |--------------------------------------------------------------------------
+         |
+         | This part is used for OperTask's integration.
+         | Please only put OperTask's cron-job related 
+         | in this row.
+         | 
+         | @since February 25, 2021
+         |
+         */
+
+        /**
+         * Login Opertask to get their token.
+         * It's run at 00:00 everyday.
+         */
+        $schedule->command('opertask:login')
+            ->cron('* * 0/4 * *');
+
+        /*
+         |--------------------------------------------------------------------------
+         | CRON JOB 
+         |--------------------------------------------------------------------------
+         |
+         | This part is used for internal purpose.
+         | Please only put internal's cron-job related 
+         | in this row.
+         | 
+         | @since February 25, 2021
+         |
+         */
     }
 
     /**
