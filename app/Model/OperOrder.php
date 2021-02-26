@@ -23,6 +23,8 @@ class OperOrder extends Model
     const GET_DRIVER_AND_SHOW_DRIVER = 7;
 
     protected $table = "oper_orders";
+    public $timestamps = false;
+
 
     public function rating(){
         return $this->hasOne('App\Model\Rating', 'order_id', 'id');
