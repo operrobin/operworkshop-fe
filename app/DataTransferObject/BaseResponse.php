@@ -34,4 +34,14 @@ class BaseResponse{
             )
         );
     }
+
+    public static function custom($code, $message, $data = null){
+        return response()->json(
+            new BaseResponse(
+                $data,
+                $message,
+                $code
+            )
+        );
+    }
 }
