@@ -44,7 +44,7 @@ class Kernel extends ConsoleKernel
          * It's run at 00:00 everyday.
          */
         $schedule->command('opertask:login')
-            ->cron('* * 0/4 * *');
+            ->cron('* */4 * * *');
 
         /*
          |--------------------------------------------------------------------------
