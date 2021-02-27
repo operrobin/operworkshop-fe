@@ -31,7 +31,7 @@
             <div class="flex-fill steps p-1 py-3 bg-light border step-active">
                 <div class="d-flex align-items-center">
                     <div class="step-form">1</div>
-                    <p class="step-text">INFORMASI <br> PENGGUNA</p>
+                    <p class="step-text text-color-oper">INFORMASI <br> PENGGUNA</p>
                 </div>
             </div>
             <div class="flex-fill steps p-1 py-3 bg-light border">
@@ -68,8 +68,13 @@
                 <label for="" class="text-muted mt-4">EMAIL</label>
                 <input id="informasi-pengguna-email-textbox" type="text" class="form-control form-border cant-space">
             </div>
-    
-            <button id="informasi-pengguna-next-button" type="button" class="btn btn-next btn-oper mt-5 rounded-pill w-100" disabled>Selanjutnya</button>
+
+
+            <div class="row d-flex justify-content-end mx-3">
+                <button disabled id="informasi-pengguna-next-button" onclick="checkCurrentBooking(this);" class="btn-prevnext">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
         </div>
     </div>
 {{-- STEP 2 - INFORMASI KENDARAAN --}}
@@ -86,7 +91,7 @@
                 <div class="flex-fill steps p-1 py-3 bg-light border step-active">
                     <div class="d-flex align-items-center">
                         <div class="step-form">2</div>
-                        <p class="step-text">INFORMASI <br> KENDARAAN</p>
+                        <p class="step-text text-color-oper">INFORMASI <br> KENDARAAN</p>
                     </div>
                 </div>
                 <div class="flex-fill steps py-3 bg-light border">
@@ -97,53 +102,61 @@
                 </div>
             </div>
             <div class="container">
-            <div class="form-group">
-                <label for="" class="text-muted mt-4">JENIS KENDARAAN</label>
-                <div class="switch-field">
-                    <input type="radio" id="switch_left" checked name="informasi-kendaraan-type-radio" value="1" checked="checked" />
-                    <label for="switch_left">MOBIL</label>
-                    <input type="radio" disabled id="switch_right" name="informasi-kendaraan-type-radio" value="2" />
-                    <label for="switch_right">MOTOR</label>
+                <div class="form-group">
+                    <label for="" class="text-muted mt-4">JENIS KENDARAAN</label>
+                    <div class="switch-field">
+                        <input type="radio" id="switch_left" checked name="informasi-kendaraan-type-radio" value="1" checked="checked" />
+                        <label for="switch_left">MOBIL</label>
+                        <input type="radio" disabled id="switch_right" name="informasi-kendaraan-type-radio" value="2" />
+                        <label for="switch_right">MOTOR</label>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="" class="text-muted mt-4">MERK KENDARAAN</label>
-                <div id="informasi-kendaraan-brand-list" class="switch-field merk">
-                    <input type="radio" id="switch_left" name="switch_2" value="yes" checked />
-                    <label class="non-radius" for="switch_left">MOBIL</label>
+                <div class="form-group">
+                    <label for="" class="text-muted mt-4">MERK KENDARAAN</label>
+                    <div id="informasi-kendaraan-brand-list" class="switch-field merk">
+                        <input type="radio" id="switch_left" name="switch_2" value="yes" checked />
+                        <label class="non-radius" for="switch_left">MOBIL</label>
 
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
+                        <input type="radio" id="switch_right" name="switch_2" value="no" />
+                        <label class="non-radius" for="switch_right">MOTOR</label>
 
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
+                        <input type="radio" id="switch_right" name="switch_2" value="no" />
+                        <label class="non-radius" for="switch_right">MOTOR</label>
 
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
+                        <input type="radio" id="switch_right" name="switch_2" value="no" />
+                        <label class="non-radius" for="switch_right">MOTOR</label>
 
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
+                        <input type="radio" id="switch_right" name="switch_2" value="no" />
+                        <label class="non-radius" for="switch_right">MOTOR</label>
+                        <input type="radio" id="switch_right" name="switch_2" value="no" />
+                        <label class="non-radius" for="switch_right">MOTOR</label>
 
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
+                        <input type="radio" id="switch_right" name="switch_2" value="no" />
+                        <label class="non-radius" for="switch_right">MOTOR</label>
 
-                    <input type="radio" id="switch_right" name="switch_2" value="no" />
-                    <label class="non-radius" for="switch_right">MOTOR</label>
+                        <input type="radio" id="switch_right" name="switch_2" value="no" />
+                        <label class="non-radius" for="switch_right">MOTOR</label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="" class="text-muted mt-4">TIPE KENDARAAN</label>
-                <input type="text" id="informasi-kendaraan-tipe-kendaraan" class="form-control form-border cant-pre-space">
-            </div>
-            <div class="form-group">
-                <label for="" class="text-muted mt-4">NOMOR POLISI</label>
-                <input type="text" id="informasi-kendaraan-nomor-polisi" class="form-control form-border cant-pre-space">
-            </div>
+                <div class="form-group">
+                    <label for="" class="text-muted mt-4">TIPE KENDARAAN</label>
+                    <input type="text" id="informasi-kendaraan-tipe-kendaraan" class="form-control form-border cant-pre-space">
+                </div>
+                <div class="form-group">
+                    <label for="" class="text-muted mt-4">NOMOR POLISI</label>
+                    <input type="text" id="informasi-kendaraan-nomor-polisi" class="form-control form-border cant-pre-space">
+                </div>
 
-            <button type="button" id="informasi-kendaraan-next-button" disabled class="btn btn-next mb-4 btn-oper mt-5 rounded-pill w-100">Selanjutnya</button>
+                <div class="row d-flex justify-content-between mx-3">
+                    <button class="btn-prevnext btn-prev">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+
+                    <button disabled id="informasi-kendaraan-next-button" class="btn-prevnext btn-next">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -169,7 +182,7 @@
                 <div class="flex-fill steps py-3 bg-light border step-active">
                     <div class="d-flex align-items-center">
                         <div class="step-form">3</div>
-                        <p class="step-text">INFORMASI <br> BENGKEL</p>
+                        <p class="step-text text-color-oper">INFORMASI <br> BENGKEL</p>
                     </div>
                 </div>
             </div>
@@ -221,7 +234,17 @@
                    
                 </div>
 
-                <button onclick="bookingOrder();" type="button" class="btn mb-4 btn-oper mt-3 py-2 rounded-pill w-100">BOOKING</button>
+                <div class="row d-flex justify-content-between align-content-center mx-3 mb-4 mt-3">
+                    
+                    <div>
+                        <button class="btn-prevnext btn-prev">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
+                    </div>
+
+
+                    <button  id="booking-btn" onclick="bookingOrder();" type="button" class="btn btn-oper py-2 rounded-pill w-100">BOOKING</button>
+                </div>
             </div>
         </div>
 
@@ -230,6 +253,9 @@
 @include('booking/location-prompt')
 @include('booking/booking-error')
 @include('booking/booking-resume')
+@include('booking/booking-is-already-exists')
+
+<input type="hidden" id="vehicle-brand-full" />
 
 <script 
     src="{{ asset('/scripts/script.js') }}">
@@ -246,11 +272,11 @@
 </script>
 
 <script type="text/javascript"
-    src="{{ asset('/scripts/view-model/booking-view-model.js') }}">
+    src="{{ asset('/scripts/view-model/booking-view-model.js') }}?version=1">
 </script>
 
 <script 
-    src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_APP_KEY') }}&callback=initMap" async defer>
+    src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_APP_KEY') }}&libraries=places&callback=initMap" async defer>
 </script>
 
 <script type="text/javascript">

@@ -27,6 +27,7 @@ function loadInformasiPengguna(phone){
       informasi_pengguna_name_textbox.value = res.data.data.customer_name;
       informasi_pengguna_phone_textbox.value = res.data.data.customer_hp;
       informasi_pengguna_email_textbox.value = res.data.data.customer_email;
+      informasi_pengguna_next_button.removeAttribute('disabled');
     }
   });
 
@@ -108,6 +109,8 @@ function loadMasterBrands(type = DEFAULT_VEHICLE_TYPE_OPTIONS){
 let batch_id = null;
 
 const getCacheBatchId = () => {
+  loaderOn();
+
   let response = new WorkshopServices().getWorkshopNearMe(
     selected_location.lat,
     selected_location.lng
@@ -115,8 +118,14 @@ const getCacheBatchId = () => {
 
   response.then(
     res => {
+      loaderOff();
       let result = res.data.data;
       batch_id = result.batch_id;
+
+      loadWorkshopNearby(
+        jquery_informasi_bengkel_bengkel_type.val() ?? 1,
+        jquery_input_vehicle_type.val() ?? 1
+      );
     }
   );
 }
@@ -171,6 +180,7 @@ const INFORMASI_BENGKEL_APPEND_AFTER_ADDRESS = `
 const INFORMASI_BENGKEL_APPEND_AFTER_RATING = `</div></div>`;
 
 function loadWorkshopNearby(bengkel_type, vehicle_type){
+  loaderOn();
 
   let response = new WorkshopServices().getWorkshopByBatchId(batch_id, bengkel_type, vehicle_type);
 
@@ -197,7 +207,7 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
        */
       informasi_bengkel_workshop_list.insertAdjacentHTML(
         'beforeend',
-        `<div id="w-${e.id}" onclick="selectWorkshop(this); markWorkshop(${e.id}, ${e.bengkel_lat}, ${e.bengkel_long});" aria-workshop-name="${e.bengkel_name}" aria-workshop-address="${e.bengkel_name}"`
+        `<div id="w-${e.id}" onclick="selectWorkshop(this); markWorkshop(${e.id}, '${e.bengkel_name}', ${e.bengkel_lat}, ${e.bengkel_long});" aria-workshop-name="${e.bengkel_name}" aria-workshop-address="${e.bengkel_name}"`
         + INFORMASI_BENGKEL_INPUT_HTML 
         + e.bengkel_name 
         + INFORMASI_BENGKEL_APPEND_AFTER_TITLE 
@@ -210,6 +220,8 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
  
       
     });
+
+    loaderOff();
   });
 }
 
@@ -222,8 +234,10 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
   * Booking Order
   */
 
+  let request_payload = {};
+
   const bookingOrder = () => {
-    let request_payload = {
+    request_payload = {
       /**
        * @see booking-view-model.js: 12 to 16
        */
@@ -285,7 +299,7 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
 
     validate.forEach(
       (e, i) => {
-        if(e == null || e == undefined){
+        if(e == null || e == undefined || e == ""){
           
           /**
            * If form incomplete, prompt to check again.
@@ -303,8 +317,65 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
       return;
     }
 
+    document.getElementById('resume-customer-fullname').innerHTML = request_payload.customer_name;
+    document.getElementById('resume-customer-phone').innerHTML = request_payload.customer_phone;
+    document.getElementById('resume-customer-email').innerHTML = request_payload.customer_email;
+
+    document.getElementById('resume-vehicle-vehicle-type').innerHTML = request_payload.vehicle_type == 1 ? "MOBIL" : "MOTOR";
+    document.getElementById('resume-vehicle-vehicle-brand').innerHTML = document.getElementById('vehicle-brand-full').value;
+    document.getElementById('resume-vehicle-fullname').innerHTML = request_payload.vehicle_name;
+    document.getElementById('resume-vehicle-plate').innerHTML = request_payload.vehicle_license_plat;
+
+    document.getElementById('resume-workshop-name').innerHTML = informasi_bengkel_selected_workshop_brand;
+    document.getElementById('resume-order-time').innerHTML = `${request_payload.booking_date} ${request_payload.booking_time}`; 
+    document.getElementById('resume-order-address').innerHTML = request_payload.customer_address;
+
+    $('#resume-modal').modal('show');
+  }
+
+const createBooking = () => {
+  loaderOn();
     let response = new BookingServices().createBooking(request_payload);
     response.then( res => {
       console.log(JSON.stringify(res));
+
+      window.location.href = res.data.data;
     });
+}
+
+document.getElementById('agreement').addEventListener('change', (e) => {
+  if(document.getElementById('agreement').checked){
+    document.getElementById('booking-trigger-btn').removeAttribute("disabled");
+  }else{
+    document.getElementById('booking-trigger-btn').setAttribute("disabled", "disabled");
   }
+});
+
+/**
+ * Check Current Booking
+ */
+
+function checkCurrentBooking(e){
+  var phone = informasi_pengguna_phone_textbox.value;
+
+  let response = new BookingServices().checkCurrentBooking(phone);
+
+  loaderOn();
+  response.then( res => {
+    if(res.data.code == 200){
+      $('#booking-is-already-exists').modal('show');
+      console.log(res);
+    }else{
+
+      /**
+       * @see /public/scriptsscript.js
+       */
+
+      slideIndex = 2;
+      showDivs(slideIndex);
+    }
+
+    loaderOff();
+  });
+
+}
