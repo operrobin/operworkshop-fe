@@ -57,4 +57,14 @@ class BookingServices{
             console.log(err);
         }
     }
+
+    async checkCurrentBooking(phone){
+        try{
+            return await axios.get(
+                APP_URL + `/api/booking?phone=${phone}`,
+            );
+        }catch(err){
+            console.log(err);
+        }
+    }
 }
