@@ -8,6 +8,12 @@ use Mail;
 
 class MessageHelper{
 
+    /**
+     * @static
+     * @var string
+     * 
+     * Social Media type identifier.
+     */
     const EMAIL = 'email';
     const WHATSAPP = 'whatsapp';
 
@@ -53,6 +59,9 @@ class MessageHelper{
                 if(env('OTP_MODE') == 'FAKE'){
                     $this->fakeWhatsappMessanging($destination, $message);
                 }else{
+                    /**
+                     * Do some whatsapp thingy.
+                     */
                     echo "Did I just send it to Whatsapp?";
                 }
                 break;
