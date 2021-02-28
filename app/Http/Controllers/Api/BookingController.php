@@ -192,7 +192,7 @@ class BookingController extends Controller
              * Generate message and link for customer
              */
             $booking_uri = new BookingUri();
-            $booking_uri->booking_uri = md5($order->id).md5(time());
+            $booking_uri->booking_uri = md5($order->id.json_encode(time()));
             $booking_uri->booking_no = $order->booking_no;
             $booking_uri->booking_time = $order->booking_time;
             $booking_uri->vehicle_type_and_brand = $vehicle_type_and_brand; // @see line 76
