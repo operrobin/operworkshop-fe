@@ -25,6 +25,44 @@ use Log;
 
 class BookingController extends Controller
 {
+    /**
+     * makeOrder
+     * An API to create Booking datas.
+     * This API also create new Customer if their respectives 
+     * customer_phone's input is not found in our records.
+     * 
+     * @param string customer_name
+     * @param string customer_phone
+     * @param string customer_email
+     * @param string customer_address
+     * 
+     * @param string booking_date
+     *      This string must had date PHP readable format.
+     *      d-m-Y or Y-m-d are acceptable
+     * 
+     * @param string booking_time
+     *      This string must had time PHP readable format.
+     *      H:i
+     * 
+     * @param string vehicle_name
+     * @param integer vehicle_brand_id
+     *      Reference to \App\Model\MasterBrand
+     * 
+     * @param string vehicle_license_plat
+     * 
+     * @param integer bengkel_type
+     *      Reference to constants in \App\Model\Workshop
+     * 
+     * @param double customer_lat
+     * @param double customer_lng
+     * 
+     * @param integer workshop_id
+     *      Reference to \App\Model\Workshop
+     * 
+     * @return mixed
+     *      If there's something wrong with the input will be return object 
+     *      If the whole process is succesful or failed in the middle will be return link string.
+     */
     public function makeOrder(Request $request){
         $v = validator()->make($request->all(), [
             "customer_name"     => "required",
@@ -154,7 +192,7 @@ class BookingController extends Controller
              * Generate message and link for customer
              */
             $booking_uri = new BookingUri();
-            $booking_uri->booking_uri = md5($order->id).md5(time());
+            $booking_uri->booking_uri = md5($order->id.json_encode(time()));
             $booking_uri->booking_no = $order->booking_no;
             $booking_uri->booking_time = $order->booking_time;
             $booking_uri->vehicle_type_and_brand = $vehicle_type_and_brand; // @see line 76
@@ -214,6 +252,35 @@ class BookingController extends Controller
             $response_payload_code, 
             $response_payload_message,
             $response_payload_data
+        );
+    }
+
+    /**
+     * checkCurrentBooking
+     * Check whatever user had inprogress booking or not.
+     * 
+     * @param string phone_number
+     */
+    public function checkCurrentBooking(Request $request){
+        $v = validator()->make($request->all(), [
+            'phone' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return BaseResponse::error($v->getMessageBag()->first(), 500);
+        }
+
+        $resultSet = OperOrder
+                        ::where('customer_hp', $request->get('phone'))
+                        ->where('order_status', '!=', OperOrder::GET_DRIVER_AND_SHOW_DRIVER)
+                        ->orderBy('id', 'desc')
+                        ->get()
+                        ->first();
+
+        return BaseResponse::custom(
+            $resultSet == null ? 404 : 200, 
+            $resultSet == null ? "There are no currently inprogress booking" : "There's a booking with booking code: {$resultSet->booking_no}", 
+            $resultSet
         );
     }
 }

@@ -45,6 +45,7 @@ Route::group(["prefix" => "google"], function(){
 });
 
 Route::group(["prefix" => "booking"], function(){
+    Route::get('', 'Api\BookingController@checkCurrentBooking');
     Route::post('', 'Api\BookingController@makeOrder');
 });
 

@@ -24,9 +24,7 @@ class GoogleMapsController extends Controller
     public function getWorkshopNearMe(Request $request){
         $v = validator()->make($request->all(), [
             "lat" => "required",
-            "lng" => "required",
-            "bengkel_type" => "required",
-            "vehicle_type" => "required"
+            "lng" => "required"
         ]);
 
         if ($v->fails()) {
@@ -46,8 +44,6 @@ class GoogleMapsController extends Controller
 
             $result_set = Workshop
                             ::where('bengkel_name', $set->name)
-                            ->where('vehicle_type', $request->get('vehicle_type'))
-                            ->where('bengkel_tipe', $request->get('bengkel_type'))
                             ->get()
                             ->first();
 
@@ -62,7 +58,7 @@ class GoogleMapsController extends Controller
                     "bengkel_alamat" => $set->vicinity ?? "Alamat tidak tersedia",
                     "bengkel_long" => $set->geometry->location->lng ?? 0.0,
                     "bengkel_lat" => $set->geometry->location->lat ?? 0.0,
-                    "bengkel_status" => $set->business_status == "OPERATIONAL" ? 1 : 0,
+                    "bengkel_status" => $set->business_status == "OPERATIONAL" ? 0 : 1,
                     "created_date" => new \DateTime('now'),
                     
                     # These LOCs need more brief.

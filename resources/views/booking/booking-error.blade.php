@@ -10,7 +10,7 @@
             <div class="modal-body px-5 d-flex align-items-center flex-column">
                 <p>Form booking anda belum lengkap.</p>
                 <p style="font-size: 14px;">Silahkan cek kembali pengisian pendaftaran booking anda.</p>
-                <button class="btn btn-oper mt-3 rounded-pill w-100">Tutup</button>
+                <button id="$('#exampleModal').modal('hide');" class="btn btn-oper mt-3 rounded-pill w-100">Tutup</button>
             </div>
 
         </div>

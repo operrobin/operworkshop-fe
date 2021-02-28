@@ -19,11 +19,19 @@ mix.js(
         'public/js'
     )
     .combine([
+        /**
+         * Services
+         */
         'resources/js/services/api-handler.js',
         'resources/js/services/auth-services.js',
         'resources/js/services/booking-services.js',
         'resources/js/services/user-services.js',
-        'resources/js/services/workshop-services.js'
+        'resources/js/services/workshop-services.js',
+
+        /**
+         * Utilities
+         */
+        'resources/js/utils/loader-helper.js'
     ], 
         'public/js/services.js')
     .sass(

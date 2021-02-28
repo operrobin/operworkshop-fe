@@ -86,6 +86,9 @@ async function session_saver (otp) {
 }
 
 function login(){
+   
+   loaderOn();
+
    let otp_code = `${code_box_1.value}${code_box_2.value}${code_box_3.value}${code_box_4.value}`;
 
    let response = new AuthServices().sendOtp(otp_phone_input.value, otp_code);
@@ -107,6 +110,8 @@ function login(){
                );
 
       }else{
+         loaderOff();
+
         code_box_1.value = "";
         code_box_2.value = "";
         code_box_3.value = "";
@@ -115,6 +120,7 @@ function login(){
         otp_error_message.classList.remove("d-none");
         otp_error_message.classList.add("d-flex");
       }
+
    });
 }
 

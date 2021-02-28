@@ -68,7 +68,7 @@ jquery_vehicle_type_radio.on('change', (e) => {
  * Vehicle's Brand Switch Function
  */
 function brandSwitchChange(e){
-  console.log(e);
+  $('#vehicle-brand-full').val($(`label[for="${e.value}"]`)[0].innerHTML);
 
   jquery_input_brand_id.val(e.value)
 }
@@ -114,7 +114,7 @@ jquery_informasi_bengkel_bengkel_type_radio.on('change', (e) => {
   jquery_informasi_bengkel_bengkel_type.val(value);
 
   removeMarkers();
-  loadWorkshopNearby(jquery_informasi_bengkel_bengkel_type.val(), value);
+  loadWorkshopNearby(jquery_informasi_bengkel_bengkel_type.val(), jquery_input_vehicle_type.val());
 });
 
 /**
@@ -260,6 +260,32 @@ function initMap () {
         zoom: 12
       });
   });
+
+  let informasi_bengkel_customer_address_textbox = document.getElementById('informasi-bengkel-customer-address-textbox');
+  const searchBox = new google.maps.places.SearchBox(informasi_bengkel_customer_address_textbox);
+
+  searchBox.addListener('places_changed', () => {
+    const place = searchBox.getPlaces()[0];
+    console.log(place);
+
+    if(place.length == 0){
+      return;
+    }
+
+    console.log("New Lat: "+ place.geometry.location.lat());
+    console.log("New Lng: "+ place.geometry.location.lng());
+
+    selected_location.lat = place.geometry.location.lat();
+    selected_location.lng = place.geometry.location.lng();
+    getCacheBatchId();
+
+
+    map.setCenter({
+      "lat": place.geometry.location.lat(), 
+      "lng": place.geometry.location.lng()
+    });
+
+  });
 }
 
 /**
@@ -269,8 +295,9 @@ function initMap () {
 let markers = [];
 
 let informasi_bengkel_selected_workshop_id = null;
+let informasi_bengkel_selected_workshop_brand = null;
 
-const markWorkshop = (id, lat, lng) => {
+const markWorkshop = (id, name, lat, lng) => {
 
   removeMarkers();
 
@@ -286,6 +313,7 @@ const markWorkshop = (id, lat, lng) => {
   );
 
   informasi_bengkel_selected_workshop_id = id;
+  informasi_bengkel_selected_workshop_brand = name;
   console.log(informasi_bengkel_selected_workshop_id);
 }
 
@@ -300,3 +328,10 @@ const removeMarkers = () => {
   informasi_bengkel_selected_workshop_id = null;
   console.log(informasi_bengkel_selected_workshop_id);
 }
+
+/**
+ * Addition
+ * @since February, 26 2021
+ */
+
+

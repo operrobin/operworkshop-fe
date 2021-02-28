@@ -23,3 +23,10 @@ for(let i = 0; i < btn_next.length; i++){
   });
 }
 
+const btn_prev = document.querySelectorAll('.btn-prev');
+for(let i = 0; i < btn_prev.length; i++){
+  btn_prev[i].addEventListener('click', () => { 
+    slideIndex = slideIndex - 1;
+    showDivs(slideIndex);
+  });
+}

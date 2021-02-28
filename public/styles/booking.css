@@ -14,3 +14,36 @@
     padding: 1rem 1rem 0rem !important;
     justify-content: center !important;
 }
+
+.form-title span{
+    font-size: 2vh;
+}
+
+.agreement-check-title{
+    font-size: 1.475vh;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #D60000 !important;
+}
+
+.btn-prevnext{
+    background-color: #fff;
+    border: 3px solid #D60000;
+    color: #D60000;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 100%;
+    font-size: 4vh;
+}
+
+.btn-prevnext:disabled{
+    border: 3px solid #D9534F;
+    color: #D9534F;
+}
+
+#booking-btn{
+    max-width: 50vw;
+}
+
