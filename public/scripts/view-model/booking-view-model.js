@@ -109,7 +109,14 @@ function loadMasterBrands(type = DEFAULT_VEHICLE_TYPE_OPTIONS){
 let batch_id = null;
 
 const getCacheBatchId = () => {
-  loaderOn();
+
+  /**
+   * @see /public/scriptsscript.js
+   */
+
+  if(slideIndex === 3){
+    loaderOn();
+  }
 
   let response = new WorkshopServices().getWorkshopNearMe(
     selected_location.lat,
@@ -118,7 +125,6 @@ const getCacheBatchId = () => {
 
   response.then(
     res => {
-      loaderOff();
       let result = res.data.data;
       batch_id = result.batch_id;
 
@@ -126,6 +132,10 @@ const getCacheBatchId = () => {
         jquery_informasi_bengkel_bengkel_type.val() ?? 1,
         jquery_input_vehicle_type.val() ?? 1
       );
+
+      if(slideIndex === 3){
+        loaderOff();
+      }
     }
   );
 }
@@ -180,7 +190,13 @@ const INFORMASI_BENGKEL_APPEND_AFTER_ADDRESS = `
 const INFORMASI_BENGKEL_APPEND_AFTER_RATING = `</div></div>`;
 
 function loadWorkshopNearby(bengkel_type, vehicle_type){
-  loaderOn();
+  /**
+   * @see /public/scriptsscript.js
+   */
+
+  if(slideIndex === 3){
+    loaderOn();
+  }
 
   let response = new WorkshopServices().getWorkshopByBatchId(batch_id, bengkel_type, vehicle_type);
 
@@ -220,8 +236,14 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
  
       
     });
+    
+    /**
+     * @see /public/scriptsscript.js
+     */
 
-    loaderOff();
+    if(slideIndex === 3){
+      loaderOff();
+    }
   });
 }
 
