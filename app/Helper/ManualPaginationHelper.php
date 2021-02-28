@@ -97,7 +97,7 @@ class ManualPaginationHelper{
         return $this;
     }
 
-    public function extractResult($set, $page, $per_page = 12){
+    protected function extractResult($set, $page, $per_page = 12){
         $resultSet = [];
 
         $page = (int) $page;
