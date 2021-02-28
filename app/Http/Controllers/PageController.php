@@ -8,6 +8,8 @@ use Jenssegers\Agent\Agent;
 
 use Session;
 
+use App\Model\NoSQL\BookingUri;
+
 class PageController extends Controller
 {
     public function splashScreen(){
@@ -37,5 +39,26 @@ class PageController extends Controller
         }
 
         return view('booking/booking');
+    }
+
+    public function bookingStatusScreen($booking_uri){
+        $resultSet = BookingUri
+                        ::where('booking_uri', $booking_uri)
+                        ->get()
+                        ->first();
+
+        /**
+         * If Booking Uri is not found, redirect to booking page.
+         */
+        if(empty($resultSet)){
+            return redirect('/booking');
+        }
+
+        return view(
+            'independent/customer-services-status',
+            [
+                "data" => $resultSet
+            ]
+        );
     }
 }

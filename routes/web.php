@@ -25,4 +25,7 @@ Route::get('/authenticate', 'PageController@authenticateScreen');
 
 Route::get('/booking', 'PageController@bookingScreen');
 
+Route::get('/booking-status/{booking_uri}', 'PageController@bookingStatusScreen');
+
+
 Route::post('/set-web-session', 'CrossSessionController@setWebSession');
