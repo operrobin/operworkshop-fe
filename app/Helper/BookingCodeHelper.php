@@ -2,11 +2,11 @@
 
 namespace App\Helper;
 
-use App\Model\Workshop;
+use App\Model\OperOrder;
 
 class BookingCodeHelper{
 
-    const BOOKING_CODE_LENGTH_SETTING = 8;
+    const BOOKING_CODE_LENGTH_SETTING = 9;
 
     /**
      * @static
@@ -31,17 +31,17 @@ class BookingCodeHelper{
             $booking_code.= $salt[rand(0, (strlen($salt) - 1))];
         }
 
-        $workshop_name = Workshop::find($workshop_id)->workshop_name;
+        /**
+         * @return \App\Helper\BookingCodeHelper::generateCode
+         * 
+         * If booking_code is already exists
+         */
+        $order = OperOrder::where('booking_no', $booking_code)->get()->first();
 
-        $post_salts = "";
-        for($i = 0; $i < strlen($workshop_name); $i++){
-            if(strlen($post_salts) == 3){
-                break;
-            }
-
-            if($i%3 == 0 && $workshop_name[$i] != ' ') $post_salts.= $workshop_name[$i];
+        if(!empty($order)){
+            return self::generateCode($workshop_id);
         }
 
-        return $booking_code.strtoupper($post_salts);
+        return $booking_code;
     }
 }
