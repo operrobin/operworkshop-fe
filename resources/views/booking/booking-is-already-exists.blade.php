@@ -13,7 +13,7 @@
                 <p>Anda memiliki booking yang sedang berjalan.</p>
                 <p style="font-size: 14px;">
                 </p>
-                <button class="btn btn-oper mt-3 rounded-pill w-100">Tutup</button>
+                <button onclick="$('#booking-is-already-exists').modal('hide');" class="btn btn-oper mt-3 rounded-pill w-100">Tutup</button>
             </div>
 
         </div>
