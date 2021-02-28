@@ -114,7 +114,7 @@ jquery_informasi_bengkel_bengkel_type_radio.on('change', (e) => {
   jquery_informasi_bengkel_bengkel_type.val(value);
 
   removeMarkers();
-  loadWorkshopNearby(jquery_informasi_bengkel_bengkel_type.val(), value);
+  loadWorkshopNearby(jquery_informasi_bengkel_bengkel_type.val(), jquery_input_vehicle_type.val());
 });
 
 /**
