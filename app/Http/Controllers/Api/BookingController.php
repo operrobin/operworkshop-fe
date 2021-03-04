@@ -11,6 +11,7 @@ use App\Model\CustomerOper;
 use App\Model\OperOrder;
 use App\Model\MasterBrand;
 use App\Model\Workshop;
+use App\Model\BookingInfo;
 use App\Model\NoSQL\NearbyWorkshop;
 use App\Model\NoSQL\OpertaskToken;
 use App\Model\NoSQL\BookingUri;
@@ -21,6 +22,8 @@ use App\Helper\BookingCodeHelper;
 use App\Helper\MessageHelper;
 
 use Log;
+
+use DB;
 
 
 class BookingController extends Controller
@@ -113,7 +116,7 @@ class BookingController extends Controller
 
         $token = OpertaskToken::all()->first()->bearer_token;
         $booking_code = BookingCodeHelper::generateCode($request->get('workshop_id'));
-        $booking_time = date("Y-m-d\T{$request->get('booking_time')}:00", strtotime($request->get('booking_date')));
+        $booking_time = date("Y-m-d {$request->get('booking_time')}:00", strtotime($request->get('booking_date')));
 
         /**
          * Generate message and initialization
@@ -139,15 +142,15 @@ class BookingController extends Controller
                     [
                         "task_template_id" => "1",
                         "booking_time" => $booking_time,
-                        "origin_latitude" => $request->get('customer_lat'),
-                        "origin_longitude" => $request->get('customer_lng'),
+                        "origin_latitude" => strval($request->get('customer_lat')),
+                        "origin_longitude" => strval($request->get('customer_lng')),
                         "destination_latitude" => $workshop->bengkel_lat,
                         "destination_longitude" => $workshop->bengkel_long,
                         "user_fullname" => $customer->customer_name,
                         "user_phonenumber" => $customer->customer_hp,
                         "vehicle_owner" => $customer->customer_name,
                         "vehicle_brand_id" => $request->get('vehicle_brand_id'),
-                        "vehicle_type" => $request->get('vehbicle_name'),
+                        "vehicle_type" => $request->get('vehicle_name'),
                         "vehicle_transmission" => "CVT",
                         "client_vehicle_license" => $request->get('vehicle_license_plat'),
                         "message" => $message
@@ -175,9 +178,9 @@ class BookingController extends Controller
             $order->vehicle_name = $request->get('vehicle_name');
             $order->vehicle_brand = $request->get('vehicle_brand_id');
             $order->vehicle_plat = $request->get('vehicle_license_plat');
-            $order->customer_name = $customer->customer_name;
-            $order->customer_hp = $customer->customer_hp;
-            $order->customer_email = $customer->customer_email;
+            $order->customer_name = $request->get('customer_name');
+            $order->customer_hp = $request->get('customer_phone');
+            $order->customer_email = $request->get('customer_email');
             $order->customer_address = $request->get('customer_address');
             $order->customer_long = $request->get('customer_lng');
             $order->customer_lat = $request->get('customer_lat');
@@ -189,6 +192,16 @@ class BookingController extends Controller
 
 
             /**
+             * Insert booking info
+             */
+            $info = new BookingInfo();
+            $info->booking_no = $order->booking_no;
+            $info->oper_task_order_id = $response->data->idorder;
+            $info->oper_task_trx_id = $response->data->trx_id;
+            $info->save();
+            
+
+            /**
              * Generate message and link for customer
              */
             $booking_uri = new BookingUri();
@@ -197,6 +210,7 @@ class BookingController extends Controller
             $booking_uri->booking_time = $order->booking_time;
             $booking_uri->vehicle_type_and_brand = $vehicle_type_and_brand; // @see line 76
             $booking_uri->vehicle_license_plat = $order->vehicle_plat;
+            $booking_uri->visit_counter = 0;
             $booking_uri->created_at = new \DateTime('now');
             $booking_uri->save(); 
             
@@ -217,7 +231,7 @@ class BookingController extends Controller
                         "booking_time" => date('D M j G:i Y', strtotime($order->booking_time)),
                         "vehicle_brand_and_type" => $vehicle_type_and_brand,
                         "vehicle_license_plat" => $order->vehicle_plat,
-                        "booking_uri" => env('APP_URL')."/booking-status/".$booking_uri->booking_uri
+                        "booking_uri" => env('APP_URL')."/booking-status/status/".$booking_uri->booking_uri
                     ],
                     "Konfirmasi booking service"
                 );
@@ -233,7 +247,7 @@ class BookingController extends Controller
                         ."Kode booking anda adalah {$order->booking_no} pada hari ".date('D M j G:i Y', strtotime($order->booking_time))
                         ." untuk kendaraan {$vehicle_type_and_brand} dengan nomor plat {$order->vehicle_plat}. "
                         ."Silahkan klik tautan berikut untuk melihat keseluruhan proses dari servis anda "
-                        .env('APP_URL')."/booking-status/".$booking_uri->booking_uri
+                        .env('APP_URL')."/booking-status/status/".$booking_uri->booking_uri
                     )
                 );
 
