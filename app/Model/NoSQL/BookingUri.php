@@ -41,6 +41,12 @@ class BookingUri extends Eloquent{
         'vehicle_license_plat',
 
         /**
+         * @var integer visit_counter
+         * An integer that determines how much time this link was clicked.
+         */
+        'visit_counter',
+
+        /**
          * @var \DateTime::class created_at
          * Reference to created data's time.
          */

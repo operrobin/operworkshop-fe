@@ -15,24 +15,23 @@ class OperTaskServices {
 
 
         if(!empty($params)){
-            switch($method){
-                case "GET": 
-                    $options["headers"] = [
-                        'Content-Type' => 'application/json',
-                        'Accept' => 'application/json'
-                    ];
-    
-                    $options["query"] = $params; 
-                    break;
-    
-                default: 
-                    $options["headers"] = [
-                        'Content-Type' => 'application/json',
-                        'Accept' => 'application/json'
-                    ];
-    
-                    $options["json"] = $params;
+
+            if($method == "GET"){
+                $options["headers"] = [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json'
+                ];
+
+                $options["query"] = $params; 
+            }else{
+                $options["headers"] = [
+                    'Content-Type' => 'application/json',
+                    'Accept' => '*/*'
+                ];
+
+                $options["json"] = $params;
             }
+
         }
 
         if($token != null){
@@ -47,6 +46,7 @@ class OperTaskServices {
             );
 
             Log::alert('REQUEST_INFO: \n\n URI: '.$uri.'\n\n Body: '.json_encode($params));
+            Log::alert('REQUEST_RESPONSE: '.json_encode($response));
             
             return json_decode((string) $response->getBody());
         }catch(RequestException $e){
@@ -68,15 +68,84 @@ class OperTaskServices {
         }
     }
 
-    public function sendOrder($request, $token){
+    /**
+     * getOrderByIdOrder
+     * @param string idorder
+     *      Reference to table booking_order_info on
+     *      `oper_task_order_id`
+     */
+    public function getOrderByIdOrder($idorder, $token){
         return $this->operRestCallback(
             "GET",
+            "/order/{$idorder}",
+            null,
+            $token
+        );
+    }
+
+
+    /**
+     * getOrderByBookingNo
+     * @param string booking_no
+     *      Reference to table booking_order_info on
+     *      `oper_task_trx_id`
+     */
+    public function getOrderByBookingNo($booking_no, $token){
+        return $this->operRestCallback(
+            "GET",
+            "/order/show/{$booking_no}",
+            null,
+            $token
+        );
+    }
+
+    /**
+     * sendOrder
+     * @method POST
+     * A service to create order in OperTask API.
+     * 
+     * 
+     * @param object request
+     *      This Object 
+     *      @param string task_template_id
+     *      @param string booking_time
+     *          string date time with format Y-m-d H:i:s
+     *      @param string origin_latitude
+     *          string from double origin_latitude
+     *      @param string origin_longitude
+     *          string from double origin_longitude
+     *      @param string destination_latitude
+     *          string from double destination_latitude
+     *      @param string destination_latitude
+     *          string from destination_latitude
+     *      @param string user_fullname
+     *      @param string user_phonenumber
+     *      @param string vehicle_owner
+     *      @param string vehicle_brand_id
+     *          Reference to Master Brand
+     *      @param string vehicle_type
+     *          Vehicle name e.g. "Fortuner 2014"
+     *      @param string vehicle_transmission
+     *          For some reason always return CVT
+     *      @param string client_vehicle_license
+     *          Plat
+     *      @param string message
+     * 
+     * @param string token 
+     */
+    public function sendOrder($request, $token){
+        return $this->operRestCallback(
+            "POST",
             "/order",
             $request,
             $token
         );
     }
 
+    /**
+     * login
+     * A service to get token from Oper Task Rest API
+     */
     public function login(){
         return $this->operRestCallback(
             "POST",

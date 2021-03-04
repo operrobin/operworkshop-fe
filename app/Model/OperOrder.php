@@ -38,4 +38,19 @@ class OperOrder extends Model
         return $this->hasOne('App\Model\Workshop', 'id', 'bengkel_id');
     }
 
+    public function booking_info(){
+        return $this->hasOne('App\Model\BookingInfo', 'booking_no', 'booking_no');
+    }
+
+    public function task(){
+        return $this->hasOne('App\Model\MasterTask', 'id', 'master_task');
+    }
+
+    public function foreman(){
+        return $this->hasOne('App\Model\CmsUser', 'id', 'foreman_id');
+    }
+
+    public function service_advisor(){
+        return $this->hasOne('App\Model\CmsUser', 'id', 'service_advisor_id');
+    }
 }
