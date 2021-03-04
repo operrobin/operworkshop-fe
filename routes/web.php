@@ -25,7 +25,10 @@ Route::get('/authenticate', 'PageController@authenticateScreen');
 
 Route::get('/booking', 'PageController@bookingScreen');
 
-Route::get('/booking-status/{booking_uri}', 'PageController@bookingStatusScreen');
+Route::group(["prefix" => "booking-status"], function(){
+    Route::get('/status/{booking_uri}', 'BookingStatusController@bookingStatusScreen');
+    Route::get('/message', 'BookingStatusController@statusFallback');
+});
 
 
 Route::post('/set-web-session', 'CrossSessionController@setWebSession');
