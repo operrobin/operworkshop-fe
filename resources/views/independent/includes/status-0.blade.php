@@ -24,7 +24,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <a data-popup="#confirm_popup_cancel" class="text-center btn_blue_custom bold_font show_popup"><span class="h6">Batalkan</span></a>
+                <a id="batalkan-btn" data-popup="#confirm_popup_cancel" class="text-center btn_blue_custom bold_font show_popup"><span class="h6">Batalkan</span></a>
             </div>
         </div>
     </div>
