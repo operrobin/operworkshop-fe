@@ -93,18 +93,23 @@
                     
                     @default
 
-                    <p style ="font-weight: bold;font-size: 18px;margin-bottom: 18px">Booking berhasil dibatalkan</p>
-                    <p>Anda telah berhasil membatalkan booking servis , apa mungkin anda ingin melakukan booking servis di hari lain ? </p>
+                    <p style ="font-weight: bold;font-size: 18px;margin-bottom: 18px">Terjadi masalah</p>
+                    <p>Dalam 5 detik anda akan kembali ke halaman booking.</p>
                     <div class="container-contact100-form-btn" style="width: 25%;margin-top: 15px;margin-left: auto;margin-right: auto">
                         <div class="wrap-contact100-form-btn">
                             <div class="contact100-form-bgbtn"></div>
-                            <button class="contact100-form-btn" type="button" onclick="redirect()">
-                                <span>
-                                    Ya
-                                </span>
-                            </button>
                         </div>
                     </div>
+
+                    <script>
+
+                        function redirect()
+                        {
+                            location.href="{{ env('APP_URL') }}/booking";
+                        }
+
+                        setTimeout(redirect(), 5000);
+                    </script>
 
                 @endswitch
 			</form>
@@ -145,12 +150,11 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-175054982-1');
-    
+
+
     function redirect()
     {
-        
         location.href="{{ env('APP_URL') }}/booking";
-        
     }
 </script>
 
