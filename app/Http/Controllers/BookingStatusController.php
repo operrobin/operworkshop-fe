@@ -24,7 +24,7 @@ class BookingStatusController extends Controller
     const BOOKING_DONE = 1;
     const BOOKING_CANCELED = 2;
     const WRONG_BOOKING_CODE = 3;
-    const BOOKING_CANCELED_BY_PURPOSE = 4;
+    const SOMETHING_WRONG = -1;
 
     /**
      * bookingStatusScreen
@@ -59,6 +59,10 @@ class BookingStatusController extends Controller
          */
         $order = OperOrder
                     ::where('booking_no', $resultSet->booking_no)
+                    ->whereNotIn('order_status', [
+                        OperOrder::BOOKING_CANCELED,
+                        OperOrder::BOOKING_DONE
+                    ])
                     ->with([
                         'booking_info',
                         'task',
@@ -71,6 +75,10 @@ class BookingStatusController extends Controller
                     ])
                     ->get()
                     ->first();
+
+        if($order == null){
+            return redirect('/booking-status/message?status='.self::WRONG_BOOKING_CODE);
+        }
 
         /**
          * Get token
@@ -86,13 +94,6 @@ class BookingStatusController extends Controller
             , $token
         );
 
-        // dd(
-        //     $order
-        //     , $response->data
-        // );
-
-        // dd($order->task->tasks[0]->list_name);
-
         return view(
             'independent/customer-services-status',
             [
@@ -101,6 +102,98 @@ class BookingStatusController extends Controller
                 "oper_task" => $response->data
             ]
         );
+    }
+
+    /**
+     * cancelOrder
+     * An Stateful API to cancel order.
+     * 
+     * @param integer order_id 
+     *  Reference to oper_orders
+     * 
+     * @param string alasan
+     * 
+     * @return redirect to statusFallback() 
+     */
+    public function cancelOrder(Request $request){
+        $v = validator()->make($request->all(), [
+            'order_id' => 'required|exists:oper_orders,id',
+            "alasan" => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back();
+        }
+
+        /**
+         * Update booking page.
+         */
+
+        $order = OperOrder
+                    ::where('id', $request->get('order_id'))
+                    ->with('booking_info')
+                    ->get()
+                    ->first();
+
+        $order->order_status = OperOrder::BOOKING_CANCELED;
+        $order->save();
+
+        $service = new OperTaskServices();
+
+        /**
+         * Get token
+         */
+        $token = OpertaskToken::all()->first()->bearer_token;
+
+        $response = $service->cancelOrder(
+            $order->booking_info->oper_task_order_id,
+            $request->get('alasan'),
+            $token
+        );
+
+        if($response->status == false){
+            return redirect('/booking-status/message?status='.self::SOMETHING_WRONG);
+        }else{
+            return redirect('/booking-status/message?status='.self::BOOKING_CANCELED);
+        }
+    }
+
+    /**
+     * orderDone
+     * An Stateful API to make order done.
+     * 
+     * @param integer order_id 
+     *  Reference to oper_orders
+     * 
+     * @param string feedback | Not Mandatory
+     * 
+     * @return redirect to statusFallback() 
+     */
+    public function orderDone(Request $request){
+        $v = validator()->make($request->all(), [
+            'order_id' => 'required|exists:oper_orders,id'
+        ]);
+
+        if ($v->fails()) {
+            return back();
+        }
+
+        /**
+         * Update booking page.
+         */
+
+        $order = OperOrder
+                    ::where('id', $request->get('order_id'))
+                    ->get()
+                    ->first();
+
+        $order->order_status = OperOrder::BOOKING_DONE;
+        $order->feedback = $request->get('feedback') ?? "";
+        $order->save();
+
+        $service = new OperTaskServices();
+
+        return redirect('/booking-status/message?status='.self::BOOKING_DONE);
     }
 
     public function statusFallback(Request $request){

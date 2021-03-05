@@ -161,4 +161,18 @@ class OperTaskServices {
             ]
         );
     }
+
+    public function cancelOrder($id, $reason, $token){
+        return $this->operRestCallback(
+            "POST",
+            "/order/cancelorder",
+            [ 
+                "idorder" => $id,
+                "reason_cancel" => $reason
+            ],
+            $token
+        );
+
+        
+    }
 }

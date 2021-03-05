@@ -11,7 +11,8 @@ class OperOrder extends Model
      * '
      * Reference to `order_status`
      * 
-     * Flow: 0 - 1 - 2 - 3 - 4 - 5 - 6 - 7
+     * Flow: 0 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8
+     * Out of flow: -1
      */
     const WAITING_FOR_DRIVER = 0;
     const GET_DRIVER = 1;
@@ -21,6 +22,8 @@ class OperOrder extends Model
     const SERVICE_ADVISOR_UPLOAD_INVOICE = 5;
     const WAITING_FOR_DRIVER_AFTER_INVOICE = 6;
     const GET_DRIVER_AND_SHOW_DRIVER = 7;
+    const BOOKING_DONE = 8;
+    const BOOKING_CANCELED = -1;
 
     protected $table = "oper_orders";
     public $timestamps = false;
