@@ -38,7 +38,7 @@
                          */
                         $active = 0;
 
-                        foreach($data->task->tasks as $key => $task){
+                        foreach($data->task->tasks ?? [] as $key => $task){
 
                             /**
                              * Since key 0 will always active, I'm skipping
@@ -54,7 +54,7 @@
                     @endphp
 
 
-                    @foreach($data->task->tasks as $key => $task)
+                    @foreach($data->task->tasks ?? [] as $key => $task)
                         <div class="box_list">
                             <div class="circle_dot full_round @if($key == $active) active @endif"></div>
                             <div class="inner_box">
