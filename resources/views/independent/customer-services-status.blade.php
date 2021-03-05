@@ -55,6 +55,13 @@
 
 <style>
 
+    #confirm_popup_cancel {
+        z-index: 99999;
+    }
+
+    #confirm_popup {
+        z-index: 99999;
+    }
     
 </style>
 
@@ -121,7 +128,7 @@
     <div class="container">
         <div class="row text-center relative_pos">
               <div class="col no_horiz_padd">
-                  <div id="icon_penjemputan" class="relative_pos box_circle circle1 bott_margin_1 @if($data->order_status == \App\Model\OperOrder::WAITING_FOR_DRIVER) box_active @endif"></div>
+                  <div id="icon_penjemputan" class="relative_pos box_circle circle1 bott_margin_1 @if($data->order_status >= \App\Model\OperOrder::WAITING_FOR_DRIVER && $data->order_status <= \App\Model\OperOrder::GET_DRIVER) box_active @endif"></div>
                   <h6 class="smallest">Penjemputan</h6>
               </div>
               <div class="col no_horiz_padd">
@@ -210,23 +217,71 @@
     @endswitch
 
 	<div id="confirm_popup" class="popup_fixed dnone">
-		<div class="inner_popup">
-           <div><p class="bold_font">Terima kasih telah melakukan booking servis pada bengkel kami.<br>Apakah anda ingin memberikan feedback terkait layanan kami ?</p></div>
-			<div class="form-group"><textarea class="form-control feedback_field" rows="3" id="feedback"></textarea></div>
-			<div class="text-center">
-                <div class="loader" id="loader"></div>
-                <button type="button"  class="btn btn-block btn-primary btn-sm close_popup" onclick="submitcomment()" id="buttonya" style="background-color:#D50000;">Ya
-                </button><button type="button"  class="btn btn-block btn-secondary btn-sm close_popup" onclick="submitcomment()" id="buttontidak">Tidak</button></div>
-		</div>
+        <form method="POST" action="/booking-status/booking-complete">
+            @csrf
+            <input type="hidden" name="order_id" value="{{ $data->id }}" />
+            <div class="inner_popup">
+                <div>
+                    <p class="bold_font">
+                        Terima kasih telah melakukan booking servis pada bengkel kami.
+                        <br />
+                        Apakah anda ingin memberikan feedback terkait layanan kami ?
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <textarea required class="form-control feedback_field" rows="3" name="feedback" id="feedback"></textarea>
+                </div>
+
+                <div class="text-center">
+                     <div class="loader" id="loader"></div>
+                     
+                     <button 
+                        type="submit"  
+                        class="btn btn-block btn-primary btn-sm close_popup" 
+                        id="buttonya" 
+                        style="background-color:#D50000;">Ya
+                     </button>
+                     
+                     <button 
+                        type="submit"  
+                        class="btn btn-block btn-secondary btn-sm close_popup" 
+                        id="buttontidak">
+                        Tidak
+                    </button>
+                </div>
+            </div>
+        </form>
 	</div>
     <div id="confirm_popup_cancel" class="popup_fixed dnone">
-		<div class="inner_popup">
-            <div><p class="bold_font">Apakah anda ingin membatalkan booking ? .<br></p></div>
-			<div class="form-group"><textarea class="form-control feedback_field" rows="3" id="reason" placeholder="Alasan membatalkan"></textarea></div>
-			<div class="text-center">
-                <div class="loader" id="loader_cancel"></div>
-                <button type="button" data-hide="#confirm_popup" class="btn btn-block btn-primary btn-sm close_popup" onclick="batalkanbooking()" id="buttonyacancel" style="background-color:#D50000;">Ya</button><button type="button" data-hide="#confirm_popup_cancel" class="btn btn-block btn-secondary btn-sm close_popup" id="buttontidakcancel">Tidak</button></div>
-		</div>
+        <form method="POST" action="/booking-status/cancel-booking">
+            @csrf
+            <input type="hidden" name="order_id" value="{{ $data->id }}" />
+            <div class="inner_popup">
+                <div><p class="bold_font">Apakah anda ingin membatalkan booking ? .<br></p></div>
+                <div class="form-group">
+                    <textarea name="alasan" required class="form-control feedback_field" rows="3" id="reason" placeholder="Alasan membatalkan"></textarea>
+                </div>
+                <div class="text-center">
+                    <div class="loader" id="loader_cancel"></div>
+                    <button 
+                        type="submit" 
+                        data-hide="#confirm_popup" 
+                        class="btn btn-block btn-primary btn-sm close_popup" 
+                        onclick="batalkanbooking()" 
+                        id="buttonyacancel" 
+                        style="background-color:#D50000;">Ya
+                    </button>
+                    
+                    <button 
+                        type="button" 
+                        data-hide="#confirm_popup_cancel" 
+                        class="btn btn-block btn-secondary btn-sm close_popup" 
+                        id="buttontidakcancel">Tidak
+                    </button>
+                </div>
+            </div>
+        </form>
 	</div>
     <input type="hidden" id="bookingstats" value="0">
     
@@ -239,5 +294,6 @@
 
 
 	<script src="{{ asset('/scripts/independent/main-script.js') }}"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHsVd_heGgBKZV5b0LG-fe9rcj3dt0xIU&callback=initMap"></script>
 </body>
 </html>
