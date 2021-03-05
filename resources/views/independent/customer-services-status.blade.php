@@ -1,116 +1,299 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Booking Service</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<title>Booking Service</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<meta property="og:title" content="">
-	<meta property="og:type" content="">
-	<meta property="og:url" content="">
-	<meta property="og:image" content="">
-	{{-- <link rel="manifest" href="../customer/site.webmanifest"> --}}
-	<link rel="apple-touch-icon" href="icon.png">
-	<!-- Place favicon.ico in the root directory -->
-	<link rel="stylesheet" href="../customer/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../customer/css/font-awesome.min.css">
-	{{-- <link rel="stylesheet" href="../customer/css/main.css"> --}}
-	<meta name="theme-color" content="#fafafa">
+<meta property="og:title" content="" />
+<meta property="og:type" content="" />
+<meta property="og:url" content="" />
+<meta property="og:image" content="" />
 
-  <style>
-    .loader {
-      border: 12px solid #f2f2f2; /* Light grey */
-      border-top: 12px solid #D50000; /* Blue */
-      border-radius: 50%;
-      width: 12px;
-      height: 12px;
-      animation: spin 2s linear infinite;
-      display: none;margin-left: auto;margin-right: auto;
-      margin-bottom: 5px;
+<!-- Place favicon.ico in the root directory -->
+{{--
+  Bootstrap
+  --}}
+
+<link 
+    rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+    crossorigin="anonymous" />
+
+{{--
+    Font Awesome
+    --}}
+
+<link 
+    rel="stylesheet" 
+    href="{{ asset('/styles/independent/font-awesome.min.css') }}" />
+
+<link rel="stylesheet" href="{{ asset('/styles/independent/customer-main.css') }}" /> 
+<link rel="stylesheet" href="{{ asset('/styles/independent/customer-style.css') }}" /> 
+<meta name="theme-color" content="#fafafa" />
+
+<script 
+    src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous">
+</script>
+
+<script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+    crossorigin="anonymous">
+</script>
+
+<script 
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+    crossorigin="anonymous">
+</script>
+
+
+<style>
+
+    #confirm_popup_cancel {
+        z-index: 99999;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-        
-    #myImg:hover {opacity: 0.7;}
-
-    /* The Modal (background) */
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed; /* Stay in place */
-      z-index: 9999;
-      padding-top: 100px; /* Location of the box */
-      left: 0;
-      top: 0;
-      width: 100%; /* Full width */
-      height: 100%; /* Full height */
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgb(0,0,0); /* Fallback color */
-      background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-    }
-
-    /* Modal Content (Image) */
-    .modal-content {
-      margin: auto;
-      display: block;
-      width: 80%;
-      max-width: 700px;
-    }
-
-    /* Caption of Modal Image (Image Text) - Same Width as the Image */
-    #caption {
-      margin: auto;
-      display: block;
-      width: 80%;
-      max-width: 700px;
-      text-align: center;
-      color: #ccc;
-      padding: 10px 0;
-      height: 150px;
-    }
-
-    /* Add Animation - Zoom in the Modal */
-    .modal-content, #caption {
-      animation-name: zoom;
-      animation-duration: 0.6s;
-    }
-
-    @keyframes zoom {
-      from {transform:scale(0)}
-      to {transform:scale(1)}
-    }
-
-    /* The Close Button */
-    .close {
-      position: absolute;
-      top: 15px;
-      right: 35px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: #bbb;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    /* 100% Image Width on Smaller Screens */
-    @media only screen and (max-width: 700px){
-      .modal-content {
-        width: 100%;
-      }
+    #confirm_popup {
+        z-index: 99999;
     }
     
-    </style>
+</style>
+
 </head>
 <body>
     
+    {{-- 
+      Headers
+      --}}
+
+<div class="div_wrapper">
+	<div class="container bott_padd">
+	  	<div class="row">
+	    		<div class="col bott_padd">
+	    			  <h6 class="heading normal_font">BOOKING</h6>
+	    		</div>
+	  	</div>
+	  	<div class="row">
+	  	  	<div class="col-4 no_right_padd">
+	  	  		<h6 class="heading normal_font">Kode booking</h6>
+	  	  	</div>
+	   	  	<div class="col-8">
+	   	  		<h6 class="heading normal_font">: <span>{{ $data->booking_no }}</span></h6>
+	   	  	</div>
+	  	</div>
+	  	<div class="row">
+	  	    <div class="col-4 no_right_padd">
+	  	        <h6 class="heading normal_font">Waktu booking</h6>
+	  	    </div>
+	  	    <div class="col-8">
+	  	    	<h6 class="heading normal_font">: <span>{{ $data->booking_time }}</span></h6>
+	  	    </div>
+	  	</div>
+	  	<div class="row">
+	  	    <div class="col-4 no_right_padd">
+	  	  	    <h6 class="heading normal_font">Lokasi booking</h6>
+	  	    </div>
+	  	    <div class="col-8">
+	  		    <h6 class="heading normal_font">: <span>{{ $data->customer_address }}</span></h6>
+	    	    </div>
+	  	</div>
+      
+    <input type="hidden" value="{{ $data->booking_no }}" id="kodebooking">
+	</div>
+</div>
+
+{{--
+    
+    OperOrder Status 
+    @see \App\Model\OperOrder
+
+    WAITING_FOR_DRIVER = 0;
+    GET_DRIVER = 1;
+    SERVICE_ADVISOR_OPEN_ORDER = 2;
+    SERVICE_ADVISOR_SUBMIT_PKB = 3;
+    FOREMAN_TASK = 4;
+    SERVICE_ADVISOR_UPLOAD_INVOICE = 5;
+    WAITING_FOR_DRIVER_AFTER_INVOICE = 6;
+    GET_DRIVER_AND_SHOW_DRIVER = 7;
+
+    --}}
+
+<div class="div_wrapper">
+    <div class="container">
+        <div class="row text-center relative_pos">
+              <div class="col no_horiz_padd">
+                  <div id="icon_penjemputan" class="relative_pos box_circle circle1 bott_margin_1 @if($data->order_status >= \App\Model\OperOrder::WAITING_FOR_DRIVER && $data->order_status <= \App\Model\OperOrder::GET_DRIVER) box_active @endif"></div>
+                  <h6 class="smallest">Penjemputan</h6>
+              </div>
+              <div class="col no_horiz_padd">
+                  <div id="icon_service_advisor" class="relative_pos box_circle circle1 bott_margin_1 @if($data->order_status >= \App\Model\OperOrder::SERVICE_ADVISOR_OPEN_ORDER && $data->order_status <= \App\Model\OperOrder::SERVICE_ADVISOR_SUBMIT_PKB) box_active @endif" data-div="#service_advisor" data-hide=".content_area"></div>
+                  <h6 class="smallest">Service Advisor</h6>
+              </div>
+              <div class="col no_horiz_padd">
+                  <div id="icon_service" class="relative_pos box_circle circle1 bott_margin_1 @if($data->order_status == \App\Model\OperOrder::FOREMAN_TASK) box_active @endif" data-div="#service" data-hide=".content_area"></div>
+                  <h6 class="smallest">Service</h6>
+              </div>
+              <div class="col no_horiz_padd">
+                  <div id="icon_pembayaran" class="relative_pos box_circle circle1 bott_margin_1 @if($data->order_status == \App\Model\OperOrder::SERVICE_ADVISOR_UPLOAD_INVOICE) box_active @endif" data-div="#pembayaran" data-hide=".content_area"></div>
+                  <h6 class="smallest">Pembayaran</h6>
+              </div>
+              <div class="col no_horiz_padd">
+                  <div id="icon_pengantaran" class="relative_pos box_circle circle1 bott_margin_1 @if($data->order_status >= \App\Model\OperOrder::WAITING_FOR_DRIVER_AFTER_INVOICE && $data->order_status <= \App\Model\OperOrder::GET_DRIVER_AND_SHOW_DRIVER) box_active @endif" data-div="#pengantaran" data-hide=".content_area"></div>
+                  <h6 class="smallest">Pengantaran</h6>
+              </div>
+        </div>
+    </div>
+</div>
+
+    @switch($data->order_status)
+
+        @case(\App\Model\OperOrder::WAITING_FOR_DRIVER)
+            
+            @include('independent/includes/status-0')
+
+            @break
+
+        @case(\App\Model\OperOrder::GET_DRIVER)
+            
+            @include('independent/includes/status-1')
+
+            @break
+
+        {{--
+            
+            Status 2 and 3 had same view
+            
+            --}}
+
+        @case(\App\Model\OperOrder::SERVICE_ADVISOR_OPEN_ORDER)
+            
+            @include('independent/includes/status-2-3')
+
+            @break
+
+        @case(\App\Model\OperOrder::SERVICE_ADVISOR_SUBMIT_PKB)
+            
+            @include('independent/includes/status-2-3')
+
+            @break
+
+
+        @case(\App\Model\OperOrder::FOREMAN_TASK)
+
+            @include('independent/includes/status-4')
+
+            @include('independent/includes/modal')
+
+            @break
+
+        @case(\App\Model\OperOrder::SERVICE_ADVISOR_UPLOAD_INVOICE)
+            
+            @include('independent/includes/status-5')
+
+            @break
+
+        @case(\App\Model\OperOrder::WAITING_FOR_DRIVER_AFTER_INVOICE)
+            
+            @include('independent/includes/status-6')
+
+            @break
+
+        @case(\App\Model\OperOrder::GET_DRIVER_AND_SHOW_DRIVER)
+
+            @include('independent/includes/status-7')
+
+            @break
+
+        @default
+
+            @break
+
+    @endswitch
+
+	<div id="confirm_popup" class="popup_fixed dnone">
+        <form method="POST" action="/booking-status/booking-complete">
+            @csrf
+            <input type="hidden" name="order_id" value="{{ $data->id }}" />
+            <div class="inner_popup">
+                <div>
+                    <p class="bold_font">
+                        Terima kasih telah melakukan booking servis pada bengkel kami.
+                        <br />
+                        Apakah anda ingin memberikan feedback terkait layanan kami ?
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <textarea required class="form-control feedback_field" rows="3" name="feedback" id="feedback"></textarea>
+                </div>
+
+                <div class="text-center">
+                     <div class="loader" id="loader"></div>
+                     
+                     <button 
+                        type="submit"  
+                        class="btn btn-block btn-primary btn-sm close_popup" 
+                        id="buttonya" 
+                        style="background-color:#D50000;">Ya
+                     </button>
+                     
+                     <button 
+                        type="submit"  
+                        class="btn btn-block btn-secondary btn-sm close_popup" 
+                        id="buttontidak">
+                        Tidak
+                    </button>
+                </div>
+            </div>
+        </form>
+	</div>
+    <div id="confirm_popup_cancel" class="popup_fixed dnone">
+        <form method="POST" action="/booking-status/cancel-booking">
+            @csrf
+            <input type="hidden" name="order_id" value="{{ $data->id }}" />
+            <div class="inner_popup">
+                <div><p class="bold_font">Apakah anda ingin membatalkan booking ? .<br></p></div>
+                <div class="form-group">
+                    <textarea name="alasan" required class="form-control feedback_field" rows="3" id="reason" placeholder="Alasan membatalkan"></textarea>
+                </div>
+                <div class="text-center">
+                    <div class="loader" id="loader_cancel"></div>
+                    <button 
+                        type="submit" 
+                        data-hide="#confirm_popup" 
+                        class="btn btn-block btn-primary btn-sm close_popup" 
+                        onclick="batalkanbooking()" 
+                        id="buttonyacancel" 
+                        style="background-color:#D50000;">Ya
+                    </button>
+                    
+                    <button 
+                        type="button" 
+                        data-hide="#confirm_popup_cancel" 
+                        class="btn btn-block btn-secondary btn-sm close_popup" 
+                        id="buttontidakcancel">Tidak
+                    </button>
+                </div>
+            </div>
+        </form>
+	</div>
+    <input type="hidden" id="bookingstats" value="0">
+    
+
+    <div id="zoom_img" class="popup_fixed dnone">
+		<div class="inner_zoom_popup">
+			<img class="zoomimg close_popup" src="" data-hide="#zoom_img">
+		</div>
+	</div>
+
+
+	<script src="{{ asset('/scripts/independent/main-script.js') }}"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHsVd_heGgBKZV5b0LG-fe9rcj3dt0xIU&callback=initMap"></script>
 </body>
 </html>
