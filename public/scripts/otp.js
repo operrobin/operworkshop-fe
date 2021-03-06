@@ -58,7 +58,7 @@ const code_box_4 = document.getElementById('codeBox4');
 const otp_error_message = document.getElementById('error-message');
 
 otp_phone_input.addEventListener('keyup', (e) => {
-  if(otp_phone_input.value.length >= 9){
+  if(otp_phone_input.value.length >= 10){
    otp_confirmation_button.removeAttribute("disabled");
   }else{
    otp_confirmation_button.setAttribute('disabled', 'disabled');
