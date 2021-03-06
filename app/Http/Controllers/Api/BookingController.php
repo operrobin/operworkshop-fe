@@ -260,6 +260,10 @@ class BookingController extends Controller
                 $response_payload_message = "Confirmation failed";
                 $response_payload_data = "https://booking.oper.co.id/konfirmasi_gagal.html";
             }
+        }else{
+            $response_payload_code = 500;
+            $response_payload_message = "Confirmation failed";
+            $response_payload_data = "https://booking.oper.co.id/konfirmasi_gagal.html";
         }
 
         return BaseResponse::custom(
