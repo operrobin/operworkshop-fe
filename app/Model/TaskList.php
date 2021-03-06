@@ -8,6 +8,8 @@ class TaskList extends Model
 {
     protected $table = "task_lists";
 
+    public $timestamps = false;
+
     protected $appends = [
         'image_url'
     ];

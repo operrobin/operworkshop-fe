@@ -8,6 +8,8 @@ class MasterTask extends Model
 {
     protected $table = "task_masters";
 
+    public $timestamps = false;
+
     public function tasks(){
         return $this->hasMany('App\Model\TaskList', 'master_task_id', 'id');
     }

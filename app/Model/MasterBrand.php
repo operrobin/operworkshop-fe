@@ -11,6 +11,8 @@ class MasterBrand extends Model
 
     protected $table = "master_brands";
 
+    public $timestamps = false;
+
     public function vehicle(){
         return $this->hasOne('App\Model\VehicleModel', 'master_brand_id', 'id');
     }

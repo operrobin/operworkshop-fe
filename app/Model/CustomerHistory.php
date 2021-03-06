@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerHistory extends Model
 {
     protected $table = "customer_history";
+
+    public $timestamps = false;
 }

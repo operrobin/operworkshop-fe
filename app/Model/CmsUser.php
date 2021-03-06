@@ -8,6 +8,8 @@ class CmsUser extends Model
 {
     protected $table = "cms_users";
 
+    public $timestamps = false;
+
     protected $append = [
         'image_url'
     ];

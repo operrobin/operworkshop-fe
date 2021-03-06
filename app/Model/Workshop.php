@@ -41,6 +41,8 @@ class Workshop extends Model
 
     protected $table = "workshop_bengkels";
 
+    public $timestamps = false;
+
     protected $appends = [
         'workshop_ratings'
     ];

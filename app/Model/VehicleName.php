@@ -8,6 +8,8 @@ class VehicleName extends Model
 {
     protected $table = "vehicle_names";
 
+    public $timestamps = false;
+
     public function master_brand(){
         return $this->belongsTo('App\Model\MasterBrand', 'id', 'master_brand_id');
     }

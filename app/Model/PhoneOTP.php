@@ -10,4 +10,5 @@ class PhoneOTP extends Model
     const LOGIN = 2;
 
     protected $table = "otp_verifications";
+    public $timestamps = false;
 }
