@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Middleware\utilities;
+namespace App\Http\Middleware\Utilities;
+use App\DataTransferObject\BaseResponse;
 
 use Closure;
 
