@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookingInfo extends Model
 {
+    /**
+     * @static
+     * @var integer
+     * 
+     * Reference to `order_state`
+     */
+    const PICKUP_STATE_ORDER = 1;
+    const DELIVERY_STATE_ORDER = 2;
+
     protected $table = "booking_order_info";
 
     public $timestamps = false;
