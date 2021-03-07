@@ -201,4 +201,12 @@ class BookingStatusController extends Controller
             "status" => $request->get('status')
         ]);
     }
+
+    public function confirmationPage(){
+        return view('independent/confirmation');
+    }
+
+    public function confirmationFailedPage(){
+        return view('independent/confirmation-failed');
+    }
 }
