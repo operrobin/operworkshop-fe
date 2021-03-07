@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\DataTransferObject\BaseResponse;
 
 use App\Model\CustomerOper;
+use App\Model\CmsUser;
 use App\Model\OperOrder;
 use App\Model\MasterBrand;
 use App\Model\Workshop;
@@ -198,6 +199,7 @@ class BookingController extends Controller
             $info->booking_no = $order->booking_no;
             $info->oper_task_order_id = $response->data->idorder;
             $info->oper_task_trx_id = $response->data->trx_id;
+            $info->order_state = BookingInfo::PICKUP_STATE_ORDER;
             $info->save();
             
 
@@ -217,7 +219,7 @@ class BookingController extends Controller
             $messanging = new MessageHelper();
 
             /**
-             * Send Mail
+             * Send Mail to Customer
              */
             
             try{
@@ -251,19 +253,43 @@ class BookingController extends Controller
                     )
                 );
 
+                /**
+                 * Send Mail to Service Advisor
+                 */
+
+                $cms = CmsUser
+                        ::where('bengkel_id', $order->bengkel_id)
+                        ->get()
+                        ->first();
+
+                $messanging->sendMessage(
+                    MessageHelper::EMAIL,
+                    $cms->email,
+                    'mail/email-sa',
+                    [
+                        "fullname" => $order->customer_name,
+                        "booking_no" => $order->booking_no,
+                        "booking_time" => date('D M j G:i Y', strtotime($order->booking_time)),
+                        "vehicle_brand_and_type" => $vehicle_type_and_brand,
+                        "vehicle_license_plat" => $order->vehicle_plat,
+                    ],
+                    "Notifikasi Customer Baru"
+                );
+
                 $response_payload_code = 200;
                 $response_payload_message = "Confirmation success";
-                $response_payload_data = "https://booking.oper.co.id/konfirmasi.html";
+                $response_payload_data = env('APP_URL')."/booking-status/confirmation";
+
             }catch(\Throwable $e){
                 Log::debug('Konfirmasi Gagal '.$e);
                 $response_payload_code = 500;
                 $response_payload_message = "Confirmation failed";
-                $response_payload_data = "https://booking.oper.co.id/konfirmasi_gagal.html";
+                $response_payload_data = env('APP_URL')."/booking-status/confirmation";
             }
         }else{
             $response_payload_code = 500;
             $response_payload_message = "Confirmation failed";
-            $response_payload_data = "https://booking.oper.co.id/konfirmasi_gagal.html";
+            $response_payload_data = env('APP_URL')."/booking-status/confirmation-failed";
         }
 
         return BaseResponse::custom(
@@ -301,4 +327,5 @@ class BookingController extends Controller
             $resultSet
         );
     }
+
 }
