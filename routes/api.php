@@ -49,3 +49,6 @@ Route::group(["prefix" => "booking"], function(){
     Route::post('', 'Api\BookingController@makeOrder');
 });
 
+Route::group(["middleware" => "utilities", "prefix" => "utilities"], function(){
+    Route::get('/token', 'Api\UtilitiesController@getOperTaskToken');
+});

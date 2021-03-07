@@ -28,9 +28,12 @@ Route::get('/booking', 'PageController@bookingScreen');
 Route::group(["prefix" => "booking-status"], function(){
     Route::get('/status/{booking_uri}', 'BookingStatusController@bookingStatusScreen');
     Route::get('/message', 'BookingStatusController@statusFallback');
+    Route::get('/confirmation', 'BookingStatusController@confirmationPage');
+    Route::get('/confirmation-failed', 'BookingStatusController@confirmationFailedPage');
 
     Route::post('/cancel-booking', 'BookingStatusController@cancelOrder');
     Route::post('/booking-complete', 'BookingStatusController@orderDone');
+
 });
 
 
