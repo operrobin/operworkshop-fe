@@ -22,7 +22,6 @@ function loadInformasiPengguna(phone){
   var response = new UserServices().getUserByPhone(phone);
 
   response.then(res => {
-    console.log(res);
     if(res.data.data.customer_name != undefined){
       informasi_pengguna_name_textbox.value = res.data.data.customer_name;
       informasi_pengguna_phone_textbox.value = res.data.data.customer_hp;
@@ -202,10 +201,6 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
 
   response.then( res => {
     let result_set = res.data.data;
-    console.log("Response Workshop Nearby "+ JSON.stringify(res));
-    console.log(result_set);
-
-
     /**
      * Remove Workshop List
      */
@@ -312,8 +307,6 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
      */
     var validate = Object.values(request_payload);
 
-    console.log(validate);
-
     /**
      * @see booking.js:177
      */
@@ -326,7 +319,6 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
           /**
            * If form incomplete, prompt to check again.
            */
-          console.log("error index number "+ i);
           openErrorModal();
           return;
         }else{
@@ -359,7 +351,6 @@ const createBooking = () => {
   loaderOn();
     let response = new BookingServices().createBooking(request_payload);
     response.then( res => {
-      console.log(JSON.stringify(res));
 
       window.location.href = res.data.data;
     });
@@ -386,7 +377,6 @@ function checkCurrentBooking(e){
   response.then( res => {
     if(res.data.code == 200){
       $('#booking-is-already-exists').modal('show');
-      console.log(res);
     }else{
 
       /**

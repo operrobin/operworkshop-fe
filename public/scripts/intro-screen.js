@@ -41,7 +41,6 @@ const scroll_left = () => {
         left: "-=" + $(window).width()
     }, 500);
 
-    console.log(current_pos);
 }
 
 const scroll_right = () => {
@@ -51,7 +50,6 @@ const scroll_right = () => {
         left: "+=" + $(window).width()
     }, 500);
 
-    console.log(current_pos);
 }
 
 /**

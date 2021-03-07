@@ -133,10 +133,8 @@ let informasi_bengkel_payload = {
 }
 
 function selectWorkshop(e){
-  console.log(e);
   $('#workshop-list div').removeClass('active');
   e.classList.add('active');
-  console.log(e.getAttribute('aria-workshop-id'));
 }
 
 /**
@@ -266,14 +264,10 @@ function initMap () {
 
   searchBox.addListener('places_changed', () => {
     const place = searchBox.getPlaces()[0];
-    console.log(place);
 
     if(place.length == 0){
       return;
     }
-
-    console.log("New Lat: "+ place.geometry.location.lat());
-    console.log("New Lng: "+ place.geometry.location.lng());
 
     selected_location.lat = place.geometry.location.lat();
     selected_location.lng = place.geometry.location.lng();
@@ -314,7 +308,6 @@ const markWorkshop = (id, name, lat, lng) => {
 
   informasi_bengkel_selected_workshop_id = id;
   informasi_bengkel_selected_workshop_brand = name;
-  console.log(informasi_bengkel_selected_workshop_id);
 }
 
   /**
@@ -326,7 +319,6 @@ const removeMarkers = () => {
   }
 
   informasi_bengkel_selected_workshop_id = null;
-  console.log(informasi_bengkel_selected_workshop_id);
 }
 
 /**
