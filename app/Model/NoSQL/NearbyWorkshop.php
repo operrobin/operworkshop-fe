@@ -54,4 +54,8 @@ class NearbyWorkshop extends Eloquent
          */
         'created_at'
     ];
+
+    public function workshop(){
+        return $this->hasOne('App\Model\Workshop', 'id', 'workshop_id');
+    }
 }
