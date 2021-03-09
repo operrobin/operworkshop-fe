@@ -65,8 +65,8 @@ class BookingStatusController extends Controller
                     ])
                     ->with([
                         'booking_info',
-                        'task',
-                        'task.tasks' => function($e){
+                        'tasks',
+                        'tasks.task' => function($e){
                             $e->orderBy('list_sequence', 'ASC');
                         },
                         'foreman',
