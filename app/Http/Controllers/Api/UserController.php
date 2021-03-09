@@ -13,40 +13,6 @@ class UserController extends Controller
 {
 
     /**
-     * applyBooking
-     * An API to register user's bookings information
-     */
-    public function applyBooking(Request $request){
-        $v = validator()->make($request->all(), [
-            "name" => "required",
-            "phone" => "required|digits_between:9,15",
-            "email" => "required|email:rfc"
-        ]); 
-
-        if($v->fails()){
-            return BaseResponse::error($v->getMessageBag()->first(), 500);
-        }
-
-        $customer = CustomerOper
-                    ::where('customer_phone', $request->get('phone'))
-                    ->orWhere('customer_email', $request->get('email'))
-                    ->get()
-                    ->first();
-
-        if(empty($customer)){
-            $customer = new CustomerOper();
-            $customer->customer_name = $request->get('name');
-            $customer->customer_phone = $request->get('phone');
-            $customer->customer_email = $request->get('email');
-            $customer->joined_date = new \DateTime('now');
-            $customer->save();
-        }
-
-        
-        
-    }
-
-    /**
      * getUserByPhone
      * An API to get User by inputting Phone Number.
      */
@@ -60,7 +26,7 @@ class UserController extends Controller
         }
 
         $customer = CustomerOper
-                    ::where('customer_hp', $request->get('phone'))
+                    ::where('customer_hp', "0".$request->get('phone'))
                     ->get()
                     ->first();
 
