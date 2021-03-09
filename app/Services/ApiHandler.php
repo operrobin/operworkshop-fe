@@ -18,6 +18,8 @@ abstract class ApiHandler{
         $client = new Client();
         $options = [];
 
+        $options["headers"] = [];
+
         if(!empty($params)){
 
             if($method == "GET"){
