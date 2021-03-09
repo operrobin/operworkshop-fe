@@ -7,66 +7,10 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
 use Log;
 
-class OperTaskServices {
-    private function operRestCallback($method, $uri, $params = [], $token = null){
-        $client = new Client();
-        $options = [];
-        $uri = env('OPERTASK_API_BASE_URL').$uri;
+class OperTaskServices extends ApiHandler {
 
+    const BASE_TOKEN = "Bearer ";
 
-        if(!empty($params)){
-
-            if($method == "GET"){
-                $options["headers"] = [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json'
-                ];
-
-                $options["query"] = $params; 
-            }else{
-                $options["headers"] = [
-                    'Content-Type' => 'application/json',
-                    'Accept' => '*/*'
-                ];
-
-                $options["json"] = $params;
-            }
-
-        }
-
-        if($token != null){
-            $options["headers"]["Authorization"] = "Bearer ".$token;
-        }
-
-        try{
-            $response = $client->request(
-                strtoupper($method),
-                $uri,
-                $options
-            );
-
-            Log::alert('REQUEST_INFO: \n\n URI: '.$uri.'\n\n Body: '.json_encode($params));
-            Log::alert('REQUEST_RESPONSE: '.json_encode($response));
-            
-            return json_decode((string) $response->getBody());
-        }catch(RequestException $e){
-            $response = $e->getResponse();
-
-            // Logging error
-            Log::alert('REQUEST_INFO: \n\n URI: '.$uri.'\n\n Headers: '.json_encode($options));
-            Log::alert('REQUEST_BODY: '.json_encode($params));
-            Log::alert('ERROR_REQUEST: '.Psr7\str($e->getRequest()));
-            Log::alert('ERROR_RESPONSE: '.json_encode($e->getResponse()));
-            Log::alert('ERROR: '. json_encode($e->getMessage()));
-
-            return json_decode(
-                json_encode([
-                    "code" => $e->getResponse()->getStatusCode() ?? "",
-                    "message" => $e->getResponse()->getReasonPhrase() ?? ""
-                ])
-            );
-        }
-    }
 
     /**
      * getOrderByIdOrder
@@ -75,11 +19,11 @@ class OperTaskServices {
      *      `oper_task_order_id`
      */
     public function getOrderByIdOrder($idorder, $token){
-        return $this->operRestCallback(
+        return $this->request(
             "GET",
-            "/order/{$idorder}",
+            env('OPERTASK_API_BASE_URL')."/order/{$idorder}",
             null,
-            $token
+            self::BASE_TOKEN.$token
         );
     }
 
@@ -91,11 +35,11 @@ class OperTaskServices {
      *      `oper_task_trx_id`
      */
     public function getOrderByBookingNo($booking_no, $token){
-        return $this->operRestCallback(
+        return $this->request(
             "GET",
-            "/order/show/{$booking_no}",
+            env('OPERTASK_API_BASE_URL')."/order/show/{$booking_no}",
             null,
-            $token
+            self::BASE_TOKEN.$token
         );
     }
 
@@ -134,11 +78,11 @@ class OperTaskServices {
      * @param string token 
      */
     public function sendOrder($request, $token){
-        return $this->operRestCallback(
+        return $this->request(
             "POST",
-            "/order",
+            env('OPERTASK_API_BASE_URL')."/order",
             $request,
-            $token
+            self::BASE_TOKEN.$token
         );
     }
 
@@ -147,9 +91,9 @@ class OperTaskServices {
      * A service to get token from Oper Task Rest API
      */
     public function login(){
-        return $this->operRestCallback(
+        return $this->request(
             "POST",
-            "/login",
+            env('OPERTASK_API_BASE_URL')."/login",
             [
                 "username" => env('OPERTASK_EMAIL'),
                 "password" => env('OPERTASK_PASSWORD'),
@@ -163,14 +107,14 @@ class OperTaskServices {
     }
 
     public function cancelOrder($id, $reason, $token){
-        return $this->operRestCallback(
+        return $this->request(
             "POST",
-            "/order/cancelorder",
+            env('OPERTASK_API_BASE_URL')."/order/cancelorder",
             [ 
                 "idorder" => $id,
                 "reason_cancel" => $reason
             ],
-            $token
+            self::BASE_TOKEN.$token
         );
 
         
