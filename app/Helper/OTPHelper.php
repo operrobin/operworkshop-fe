@@ -7,6 +7,7 @@ use App\Model\PhoneOTP;
 use App\Messanging\Producer\SendOTP;
 
 use App\Services\TelegramServices;
+use App\Services\FonnteServices;
 
 use Log;
 
@@ -38,6 +39,20 @@ class OTPHelper{
         return $otp_code;
     }
 
+    private function createPhoneOTP($phone_number, $type){
+        /**
+         * Create new otp_verifications
+         */
+        $otp = new PhoneOTP();
+        $otp->phone = $phone_number;
+        $otp->otp_code = $this->generateCode(self::OTP_LENGTH_SETTING);
+        $otp->otp_type = $type;
+        $otp->created_at = new \DateTime('now');
+        $otp->save();
+
+        return $otp;
+    }
+
     /**
      * triggerOTP
      * A function to send OTP trigger to our Node JS server.
@@ -51,15 +66,8 @@ class OTPHelper{
      * @return void
      */
     public function triggerOTP($phone_number, $type){
-        /**
-         * Create new otp_verifications
-         */
-        $otp = new PhoneOTP();
-        $otp->phone = $phone_number;
-        $otp->otp_code = $this->generateCode(self::OTP_LENGTH_SETTING);
-        $otp->otp_type = $type;
-        $otp->created_at = new \DateTime('now');
-        $otp->save();
+
+        $otp = $this->createPhoneOTP($phone_number, $type);
 
         /**
          * Message Broker to send OTP to Node JS Server
@@ -73,8 +81,28 @@ class OTPHelper{
             );
         }catch(\Throwable $e){
             Log::alert("Failed to send OTP trough broker: ".$e->getMessage());
-            $this->fakeOTP($phone_number, $type);
+
+            if(env('OTP_MODE') == "FAKE"){
+                $this->fakeOTP($phone_number, $type);
+            }else{
+                $this->whatsappOTP($phone_number, $type);
+            }
         }
+    }
+
+    /**
+     * whatsappOTP
+     */
+    public function whatsappOTP($phone_number, $type){
+
+        $otp = $this->createPhoneOTP($phone_number, $type);
+
+        $fonnte = new FonnteServices();
+
+        $fonnte->sendMessage(
+            $phone_number,
+            "Oper Workshop - JANGAN MEMBERITAHU KODE RAHASIA INI KE SIAPAPUN. KODE RAHASIA UNTUK MASUK: {$otp->otp_code}"
+        );
 
     }
 
@@ -84,15 +112,8 @@ class OTPHelper{
      * A function to send OTP trigger to Telegram Services.
      */
     public function fakeOTP($phone_number, $type){
-        /**
-         * Create new otp_verifications
-         */
-        $otp = new PhoneOTP();
-        $otp->phone = $phone_number;
-        $otp->otp_code = $this->generateCode(self::OTP_LENGTH_SETTING);
-        $otp->otp_type = $type;
-        $otp->created_at = new \DateTime('now');
-        $otp->save();
+        
+        $otp = $this->createPhoneOTP($phone_number, $type);
 
         $telegram = new TelegramServices();
         $telegram->sendMessage(
