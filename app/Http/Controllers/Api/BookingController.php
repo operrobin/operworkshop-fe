@@ -152,7 +152,7 @@ class BookingController extends Controller
                         "destination_latitude" => $workshop->bengkel_lat,
                         "destination_longitude" => $workshop->bengkel_long,
                         "user_fullname" => $customer->customer_name,
-                        "user_phonenumber" => $customer->customer_hp,
+                        "user_phonenumber" => $customer->customer_hp ?? $formatted_phone,
                         "vehicle_owner" => $customer->customer_name,
                         "vehicle_brand_id" => $request->get('vehicle_brand_id'),
                         "vehicle_type" => $request->get('vehicle_name'),
