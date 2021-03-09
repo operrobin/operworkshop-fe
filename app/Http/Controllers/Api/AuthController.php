@@ -79,8 +79,9 @@ class AuthController extends Controller
         }
 
         $otp = PhoneOTP
-                ::where('phone', "0".$request->get('phone'))
+                ::where('phone', $request->get('phone'))
                 ->where('otp_code', $request->get('otp'))
+                ->orderBy('id', 'DESC')
                 ->get()
                 ->first();
 
