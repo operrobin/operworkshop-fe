@@ -45,8 +45,12 @@ class OperOrder extends Model
         return $this->hasOne('App\Model\BookingInfo', 'booking_no', 'booking_no');
     }
 
-    public function task(){
+    public function master_task(){
         return $this->hasOne('App\Model\MasterTask', 'id', 'master_task');
+    }
+
+    public function tasks() {
+        return $this->hasMany('App\Model\ForemanTaskProgress', 'order_id', 'id');
     }
 
     public function foreman(){
