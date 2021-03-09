@@ -24,7 +24,7 @@ class AuthServices{
             return await axios.post(
                 APP_URL + "/api/auth/send-otp",
                 {
-                    "phone": phone,
+                    "phone": "0" + phone,
                     "otp": otp
                 }
             );
