@@ -33,7 +33,8 @@ class FonnteServices extends ApiHandler {
                 "type" => $type,
                 "text" => $text
             ],
-            env('FONNTE_API_KEY')
+            env('FONNTE_API_KEY'),
+            true
         );
     }
 }

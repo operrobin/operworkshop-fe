@@ -14,7 +14,7 @@ use Log;
  */
 abstract class ApiHandler{
 
-    protected function request($method, $uri, $params = [], $token = null){
+    protected function request($method, $uri, $params = [], $token = null, $multipart = null){
         $client = new Client();
         $options = [];
 
@@ -28,12 +28,36 @@ abstract class ApiHandler{
 
                 $options["query"] = $params; 
             }else{
-                $options["headers"] = [
-                    'Content-Type' => 'application/json',
-                    'Accept' => '*/*'
-                ];
+                if($multipart) {
+                        
+                    $multipart_params = [];
+                    foreach ($params as $key => $param) {
+                        if (!empty($param)) {
+                            if (is_object($param)) {
+                                $multipart_params[] = [
+                                    'filename' => $param->getClientOriginalName(),
+                                    'name'     => $key,
+                                    'contents' => file_get_contents( $param->getPathName() ),
+                                ];
+                            }else{
+                                $multipart_params[] = [
+                                    "name" => $key,
+                                    "contents" => $param
+                                ];
+                            }
+                        } 
+                    }
 
-                $options["json"] = $params;
+                    $options["multipart"] = $multipart_params;
+
+                }else {
+                    $options["headers"] += [
+                        'Content-Type' => 'application/json',
+                        'Accept' => 'application/json'
+                    ];
+
+                    $options["json"] = $params;
+                }
             }
 
         }
