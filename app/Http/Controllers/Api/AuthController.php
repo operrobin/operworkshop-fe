@@ -33,7 +33,7 @@ class AuthController extends Controller
         }
 
         $customer = CustomerOper
-                    ::where('customer_hp', $request->get('phone_number'))
+                    ::where('customer_hp', "0".$request->get('phone_number'))
                     ->get()
                     ->first();
 
@@ -46,12 +46,12 @@ class AuthController extends Controller
 
         if(env('OTP_MODE') == "FAKE"){
             $helper->fakeOTP(
-                $request->get('phone_number'),
+                "0".$request->get('phone_number'),
                 empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
             );
         }else{
             $helper->triggerOTP(
-                $request->get('phone_number'),
+                "0".$request->get('phone_number'),
                 empty($customer) ? PhoneOTP::REGISTER : PhoneOTP::LOGIN
             );
         }
@@ -81,6 +81,7 @@ class AuthController extends Controller
         $otp = PhoneOTP
                 ::where('phone', $request->get('phone'))
                 ->where('otp_code', $request->get('otp'))
+                ->orderBy('id', 'DESC')
                 ->get()
                 ->first();
 

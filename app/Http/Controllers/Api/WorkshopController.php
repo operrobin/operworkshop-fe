@@ -69,7 +69,7 @@ class WorkshopController extends Controller
 
         $google = new GoogleMapsServices();
 
-        $resultSet = Workshop::all();
+        $resultSet = Workshop::with('setting')->get();
 
         /**
          * Generate batch that will be returned.
@@ -108,7 +108,7 @@ class WorkshopController extends Controller
                 );
     
     
-                if($distance > (double) env('GOOGLE_MAPS_SEARCH_NEARBY_RADIUS_SETTING')){
+                if($distance > (double) env('GOOGLE_MAPS_SEARCH_NEARBY_RADIUS_SETTING') || $distance > $set->setting->maks_jarak){
                     continue;
                 }
     

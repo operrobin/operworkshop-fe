@@ -19,6 +19,6 @@ class TaskList extends Model
     }
 
     public function getImageUrlAttribute(){
-        return env('CMS_URL')."task/".$this->image_name;
+        return env('CMS_URL')."files/task/".$this->image_name;
     }
 }

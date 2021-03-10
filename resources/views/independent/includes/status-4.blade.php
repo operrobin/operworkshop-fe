@@ -38,14 +38,14 @@
                          */
                         $active = 0;
 
-                        foreach($data->task->tasks ?? [] as $key => $task){
+                        foreach($data->tasks ?? [] as $key => $task){
 
                             /**
                              * Since key 0 will always active, I'm skipping
                              * the check of key. 
                              */
                             if($key != 0){
-                                if(!empty($data->task->tasks[$key-1]->list_done)){
+                                if(!empty($data->tasks[$key-1]->list_done)){
                                     $active = $key;
                                 }
                             }
@@ -54,14 +54,14 @@
                     @endphp
 
 
-                    @foreach($data->task->tasks ?? [] as $key => $task)
+                    @foreach($data->tasks  ?? [] as $key => $task)
                         <div class="box_list">
                             <div class="circle_dot full_round @if($key == $active) active @endif"></div>
                             <div class="inner_box">
-                                <h4 class="no_margin">{{ $task->list_name }}</h4>   
+                                <h4 class="no_margin">{{ $task->task->list_name }}</h4>   
                                 
                                 @if($task->list_done !== null)
-                                    <img id="myImg" src="{{ $task->image_url }}" alt="Proses pengerjaan oleh mekanik" style="width:100%;height:220px;object-fit: cover;margin-top:25px;border-radius:8px;">
+                                    <img id="myImg" src="{{ $task->image_uri }}" alt="Proses pengerjaan oleh mekanik" style="width:100%;height:220px;object-fit: cover;margin-top:25px;border-radius:8px;">
                                 @endif
                             </div>
                         </div>

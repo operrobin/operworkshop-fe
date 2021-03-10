@@ -62,4 +62,8 @@ class Workshop extends Model
 
         return number_format((float) $average[0]->rating ?? 0, 1, '.', '');
     }
+
+    public function setting(){
+        return $this->hasOne('App\Model\BengkelSetting', 'workshop_bengkel_id', 'id');
+    }
 }

@@ -23,8 +23,9 @@ function loadInformasiPengguna(phone){
 
   response.then(res => {
     if(res.data.data.customer_name != undefined){
+      
       informasi_pengguna_name_textbox.value = res.data.data.customer_name;
-      informasi_pengguna_phone_textbox.value = res.data.data.customer_hp;
+      informasi_pengguna_phone_textbox.value = res.data.data.customer_hp.slice(1);
       informasi_pengguna_email_textbox.value = res.data.data.customer_email;
       informasi_pengguna_next_button.removeAttribute('disabled');
     }

@@ -13,6 +13,8 @@ use App\Model\OperOrder;
 use App\Model\MasterBrand;
 use App\Model\Workshop;
 use App\Model\BookingInfo;
+use App\Model\MasterTask;
+use App\Model\WorkshopSetting;
 use App\Model\NoSQL\NearbyWorkshop;
 use App\Model\NoSQL\OpertaskToken;
 use App\Model\NoSQL\BookingUri;
@@ -90,18 +92,20 @@ class BookingController extends Controller
             return BaseResponse::error($v->getMessageBag()->first(), 500);
         }
 
+        $formatted_phone = "0".$request->get('customer_phone');
+
         /**
          * Create customer if not exist.
          */
         $customer = CustomerOper
-                        ::where('customer_hp', $request->get('customer_phone'))
+                        ::where('customer_hp', $formatted_phone)
                         ->get()
                         ->first();
 
         if(empty($customer)){
             $customer = new CustomerOper();
             $customer->customer_name = $request->get('customer_name');
-            $customer->customer_hp = $request->get('customer_phone');
+            $customer->customer_hp = $formatted_phone;
             $customer->customer_email = $request->get('customer_email');
             $customer->joined_date = new \DateTime('now');
             $customer->save();
@@ -148,7 +152,7 @@ class BookingController extends Controller
                         "destination_latitude" => $workshop->bengkel_lat,
                         "destination_longitude" => $workshop->bengkel_long,
                         "user_fullname" => $customer->customer_name,
-                        "user_phonenumber" => $customer->customer_hp,
+                        "user_phonenumber" => $customer->customer_hp ?? $formatted_phone,
                         "vehicle_owner" => $customer->customer_name,
                         "vehicle_brand_id" => $request->get('vehicle_brand_id'),
                         "vehicle_type" => $request->get('vehicle_name'),
@@ -166,21 +170,23 @@ class BookingController extends Controller
         if($response->message === "success"){
 
             /**
+             * Get Task Data
+             */
+
+            $workshop = Workshop::find($request->get('workshop_id'));
+
+            /**
              * Create new Order
              * 
-             * @todo warning!
-             * Missing these informations:
-             * 
-             * master_task (int)
              */
             $order = new OperOrder();
-
+            $order->master_task = $workshop->task_id;
             $order->bengkel_id = $request->get('workshop_id');
             $order->vehicle_name = $request->get('vehicle_name');
             $order->vehicle_brand = $request->get('vehicle_brand_id');
             $order->vehicle_plat = $request->get('vehicle_license_plat');
             $order->customer_name = $request->get('customer_name');
-            $order->customer_hp = $request->get('customer_phone');
+            $order->customer_hp = $formatted_phone;
             $order->customer_email = $request->get('customer_email');
             $order->customer_address = $request->get('customer_address');
             $order->customer_long = $request->get('customer_lng');
@@ -215,7 +221,7 @@ class BookingController extends Controller
             $booking_uri->visit_counter = 0;
             $booking_uri->created_at = new \DateTime('now');
             $booking_uri->save(); 
-            
+
             $messanging = new MessageHelper();
 
             /**
@@ -245,9 +251,9 @@ class BookingController extends Controller
                     MessageHelper::WHATSAPP,
                     $order->customer_hp,
                     (
-                        "Halo, {$order->customer_name}. Booking anda telah berhasil tercatat disistem kami."
-                        ."Kode booking anda adalah {$order->booking_no} pada hari ".date('D M j G:i Y', strtotime($order->booking_time))
-                        ." untuk kendaraan {$vehicle_type_and_brand} dengan nomor plat {$order->vehicle_plat}. "
+                        "Halo, {$order->customer_name}. Booking anda telah berhasil tercatat disistem kami.\n"
+                        ."Kode booking anda adalah {$order->booking_no} pada hari ".date('D M j G:i Y', strtotime($order->booking_time))."\n"
+                        ." untuk kendaraan {$vehicle_type_and_brand} dengan nomor plat {$order->vehicle_plat}. \n"
                         ."Silahkan klik tautan berikut untuk melihat keseluruhan proses dari servis anda "
                         .env('APP_URL')."/booking-status/status/".$booking_uri->booking_uri
                     )
@@ -274,6 +280,19 @@ class BookingController extends Controller
                         "vehicle_license_plat" => $order->vehicle_plat,
                     ],
                     "Notifikasi Customer Baru"
+                );
+
+                $messanging->sendMessage(
+                    MessageHelper::WHATSAPP,
+                    $cms->phone,
+                    (
+                        "Halo, {$cms->username}. Bila anda mendapatkan pesan ini, berarti ada customer baru dibengkel anda.\n"
+                        ."Nama Customer: {$order->customer_name}\n"
+                        ."Kode Booking: {$order->booking_no}\n"
+                        ."Waktu Booking: {$order->booking_time}\n"
+                        ."Merk dan Tipe: {$vehicle_type_and_brand}\n"
+                        ."Nomor Plat Kendaraan: {$order->vehicle_plat}\n"
+                    )
                 );
 
                 $response_payload_code = 200;

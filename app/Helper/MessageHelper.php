@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use App\Services\TelegramServices;
+use App\Services\FonnteServices;
 
 use Mail;
 
@@ -59,10 +60,7 @@ class MessageHelper{
                 if(env('OTP_MODE') == 'FAKE'){
                     $this->fakeWhatsappMessanging($destination, $message);
                 }else{
-                    /**
-                     * Do some whatsapp thingy.
-                     */
-                    echo "Did I just send it to Whatsapp?";
+                    $this->fonnteMessanging($destination, $message);
                 }
                 break;
 
@@ -85,6 +83,23 @@ class MessageHelper{
         $telegram = new TelegramServices();
         $telegram->sendMessage(
             "Dear {$phone_number},\n\n  {$message}"
+        );
+    }
+
+
+    /**
+     * fonnteMessanging
+     * A function that send message trough Whatsapp.
+     * 
+     * @param string phone_number
+     * @param string message
+     */
+    private function fonnteMessanging($phone_number, $message){
+        $fonnte = new FonnteServices();
+
+        $fonnte->sendMessage(
+            $phone_number,
+            $message
         );
     }
 }
