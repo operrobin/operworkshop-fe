@@ -51,7 +51,7 @@
                         <a href="tel:{{ ($oper_task->driver->user->phonenumber ?? "Telepon tidak tersedia") }}" class="phone_icon"><i class="fa fa-phone h1 bigger" data-unicode="f095"></i></a>
                         
                          
-                        <a href="whatsapp://send?phone={{ ($oper_task->driver->user->phonenumber ?? "Telepon tidak tersedia") }}&text=Halo saya pemilik kendaraan {{ $data->vehicle_name }} dengan nomor polisi : {{ $data->vehicle_plat }} dan kode booking : {{ $data->booking_no }} , Apakah bapak bisa saya hubungi ? " class="whatsapp_icon" ><i class="fa fa-whatsapp h1 bigger" data-unicode="f232"></i>
+                        <a href="whatsapp://send?phone=@isset($oper_task->driver->user->phonenumber) {{ "+62".substr($oper_task->driver->user->phonenumber, 1, strlen($oper_task->driver->user->phonenumber)) }} @else "Telepon tidak tersedia" @endisset&text=Halo saya pemilik kendaraan {{ $data->vehicle_name }} dengan nomor polisi : {{ $data->vehicle_plat }} dan kode booking : {{ $data->booking_no }} , Apakah bapak bisa saya hubungi ? " class="whatsapp_icon" ><i class="fa fa-whatsapp h1 bigger" data-unicode="f232"></i>
                         
                         </a>
                     </div>
