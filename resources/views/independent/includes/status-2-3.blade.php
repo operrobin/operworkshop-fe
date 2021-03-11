@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-12 bott_padd">
                     <a 
-                        href="whatsapp://send?phone={{ $data->service_advisor->phone ?? "Telepon tidak tersedia" }}&text=Halo saya pemilik kendaraan {{ $data->vehicle_name }} dengan nomor polisi : {{ $data->vehicle_plat }} dan kode booking : {{ $data->booking_no }} , Apakah bapak bisa saya hubungi ? " 
+                        href="whatsapp://send?phone=@isset($data->service_advisor->phone) {{ "+62".substr($data->service_advisor->phone, 1, strlen($data->service_advisor->phone)) }} @else "Telepon tidak tersedia" @endisset&text=Halo saya pemilik kendaraan {{ $data->vehicle_name }} dengan nomor polisi : {{ $data->vehicle_plat }} dan kode booking : {{ $data->booking_no }} , Apakah bapak bisa saya hubungi ? " 
                         class="text-center btn_green_custom bold_font">
                         
                         <i class="fa fa-video-camera" data-unicode="f03d"></i> 
