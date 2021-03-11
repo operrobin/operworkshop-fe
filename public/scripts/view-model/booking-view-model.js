@@ -98,6 +98,9 @@ function loadMasterBrands(type = DEFAULT_VEHICLE_TYPE_OPTIONS){
  * Informasi Kendaraan Part 
  */
 
+const date_control = document.getElementById('informasi-bengkel-booking-date-datecontrol');
+const time_control = document.getElementById('informasi-bengkel-booking-time-datecontrol');
+
 /**
  * Batching MongoDB's Cache Data
  */
@@ -190,17 +193,25 @@ const INFORMASI_BENGKEL_APPEND_AFTER_ADDRESS = `
 const INFORMASI_BENGKEL_APPEND_AFTER_RATING = `</div></div>`;
 
 function loadWorkshopNearby(bengkel_type, vehicle_type){
+
+  if(date_control.value == "" && time_control.value == ""){
+    return;
+  }
+
   /**
    * @see /public/scriptsscript.js
    */
 
   if(slideIndex === 3){
-    loaderOn();
+    // loaderOn();
   }
+
 
   let response = new WorkshopServices().getWorkshopByBatchId(batch_id, bengkel_type, vehicle_type);
 
   response.then( res => {
+    console.log(res);
+
     let result_set = res.data.data;
     /**
      * Remove Workshop List
@@ -210,9 +221,51 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
       .querySelectorAll('*')
         .forEach( n => n.remove() );
 
+    let current = new Date();
+
+    let inputted = new Date(
+      date_control.value.substring(0, 4),
+      date_control.value.substring(5, 7) - 1,
+      date_control.value.substring(8, 10),
+      time_control.value.substring(0, 2),
+      time_control.value.substring(3, 5)
+    );
+
+    if(inputted.getTime() - current.getTime() < 0){
+      loaderOff();
+      informasi_bengkel_workshop_list.insertAdjacentHTML('beforeend', '<p>Tanggal booking yang dipilih lebih kecil dari waktu sekarang.</p>');
+      return;
+    }
+
     result_set.forEach( e => {
 
-        
+      let bengkel_time_open = new Date(
+        current.getFullYear(),
+        current.getMonth() - 1,
+        current.getDate(),
+        e.setting.bengkel_open.substring(0, 2),
+        e.setting.bengkel_open.substring(3, 5)
+      );
+  
+      let bengkel_time_close = new Date(
+        current.getFullYear(),
+        current.getMonth() - 1,
+        current.getDate(),
+        e.setting.bengkel_close.substring(0, 2),
+        e.setting.bengkel_close.substring(3, 5)
+      );
+
+      console.log((inputted.getTime() - current.getTime()) / 3600);
+      console.log('Minimum order time '+ (parseInt(e.setting.min_order_time.substring(0, 2) ?? 0) * 3600));
+      
+      if(((inputted.getTime() - current.getTime()) / 3600) <= ((parseInt(e.setting.min_order_time.substring(0, 2) ?? 0)) * 3600)){
+        return;
+      }
+
+      if(inputted.getHours() < bengkel_time_open.getHours() || inputted.getHours() > bengkel_time_close.getHours()){
+        return;
+      }
+
 
       /**
        * Append workshop list with new ones.
@@ -234,15 +287,42 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
     });
     
     /**
-     * @see /public/scriptsscript.js
+     * @see /public/scripts/script.js
      */
 
     if(slideIndex === 3){
       loaderOff();
     }
+
+               
+    if(informasi_bengkel_workshop_list.innerHTML == "" && date_control.value != "" && time_control.value != ""){
+      informasi_bengkel_workshop_list.insertAdjacentHTML('beforeend', `<p>Booking untuk tanggal ${date_control.value} jam ${time_control.value} di alamat terpilih tidak tersedia.</p>`);
+    }
   });
 }
 
+
+$('#informasi-bengkel-booking-time-datecontrol').on('change', () => {
+  if($('#informasi-bengkel-booking-date-datecontrol').val() == ""){
+    return;
+  }
+
+  loadWorkshopNearby(        
+    jquery_informasi_bengkel_bengkel_type.val() ?? 1,
+    jquery_input_vehicle_type.val() ?? 1
+  );
+});
+
+$('#informasi-bengkel-booking-date-datecontrol').on('change', () => {
+  if($('#informasi-bengkel-booking-time-datecontrol').val() == ""){
+    return;
+  }
+
+  loadWorkshopNearby(        
+    jquery_informasi_bengkel_bengkel_type.val() ?? 1,
+    jquery_input_vehicle_type.val() ?? 1
+  );
+});
 
 /**
  * End of Informasi Kendaraan Part 

@@ -18,6 +18,8 @@ use App\Services\GoogleMapsServices;
 
 class WorkshopController extends Controller
 {
+    const KM_TO_METER = 1000;
+
     /**
      * getWorkshopByType
      * An API to get Workshop by it's type.
@@ -108,7 +110,7 @@ class WorkshopController extends Controller
                 );
     
     
-                if($distance > (double) env('GOOGLE_MAPS_SEARCH_NEARBY_RADIUS_SETTING') || $distance > $set->setting->maks_jarak){
+                if($distance > (double) env('GOOGLE_MAPS_SEARCH_NEARBY_RADIUS_SETTING') || $distance > ($set->setting->maks_jarak / self::KM_TO_METER)){
                     continue;
                 }
     
@@ -177,6 +179,7 @@ class WorkshopController extends Controller
                 ::whereIn('id', $ids)
                 ->where('bengkel_tipe', $request->get('bengkel_type'))
                 ->where('vehicle_type', $request->get('vehicle_type'))
+                ->with('setting')
                 ->get(), 
             "Success getting all workshop datas"
         );
