@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        LoginOperTask::class
+        'App\Console\Commands\LoginOperTask'
     ];
 
     /**
@@ -41,10 +41,10 @@ class Kernel extends ConsoleKernel
 
         /**
          * Login Opertask to get their token.
-         * It's run at 00:00 everyday.
+         * It's run at 00:00 every 2 hours.
          */
         $schedule->command('opertask:login')
-            ->cron('* */4 * * *');
+            ->cron('0 */2 * * *');
 
         /*
          |--------------------------------------------------------------------------

@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function() {
+    return response()->json(
+        [
+            "status" => true,
+            "code" => 200,
+            "message" => "Oper Workshop",
+            "data" => [
+                "app" => env('APP_URL'),
+                "app_time_zone" => date_default_timezone_get(),
+                "time" => date('D, m Y H:i:s', strtotime('now'))
+            ]
+        ]
+    );
+});
+
 Route::group([
         "prefix" => "auth"
     ], function(){
