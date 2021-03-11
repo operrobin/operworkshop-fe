@@ -25,8 +25,8 @@ class Workshop extends Model
      * 
      * Reference to bengkel_status
      */
-    const ACTIVE = 0;
-    const INACTIVE = 1;
+    const ACTIVE = 1;
+    const INACTIVE = 0;
 
     /**
      * @static
