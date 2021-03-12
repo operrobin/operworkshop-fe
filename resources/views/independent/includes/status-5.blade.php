@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-4">
                 <div class="full_round relative_pos box_circle circle3 bott_margin_1" >
-                    <img src="img/service74x74.png">
+                    <img src="{{ asset('/assets/img/driver74x74.png') }}">
                 </div>
             </div>
             <div class="col-8 top_padd">
