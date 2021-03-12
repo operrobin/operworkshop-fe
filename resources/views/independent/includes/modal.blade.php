@@ -19,13 +19,17 @@
     var captionText = document.getElementById("caption");
 
     @foreach($data->tasks  ?? [] as $key => $task)
-        var img_{{ $key }} = document.getElementById("myImg-{{ $key }}");
 
-        img_{{ $key }}.onclick = function(){
-            modal.style.display = "block";
-            modalImg.src = this.src;
-            captionText.innerHTML = this.alt;
-        }
+        @if($image_name != null)
+            var img_{{ $key }} = document.getElementById("myImg-{{ $key }}");
+
+            img_{{ $key }}.onclick = function(){
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt;
+            }
+        @endif
+
     @endforeach
 
     // Get the <span> element that closes the modal
