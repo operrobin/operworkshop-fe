@@ -334,7 +334,7 @@ class BookingController extends Controller
         }
 
         $resultSet = OperOrder
-                        ::where('customer_hp', $request->get('phone'))
+                        ::where('customer_hp', "0".$request->get('phone'))
                         ->where('order_status', '!=', OperOrder::GET_DRIVER_AND_SHOW_DRIVER)
                         ->orderBy('id', 'desc')
                         ->get()
