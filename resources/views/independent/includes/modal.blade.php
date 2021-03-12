@@ -20,7 +20,7 @@
 
     @foreach($data->tasks  ?? [] as $key => $task)
 
-        @if($image_name != null)
+        @if($task->image_name != null)
             var img_{{ $key }} = document.getElementById("myImg-{{ $key }}");
 
             img_{{ $key }}.onclick = function(){
