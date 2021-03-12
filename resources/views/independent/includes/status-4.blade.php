@@ -61,7 +61,7 @@
                                 <h4 class="no_margin">{{ $task->task->list_name }}</h4>   
                                 
                                 @if($task->list_done !== null)
-                                    <img id="myImg" src="{{ $task->image_uri }}" alt="Proses pengerjaan oleh mekanik" style="width:100%;height:220px;object-fit: cover;margin-top:25px;border-radius:8px;">
+                                    <img id="myImg-{{ $key }}" src="{{ $task->image_uri }}" alt="Proses pengerjaan oleh mekanik" style="width:100%;height:220px;object-fit: cover;margin-top:25px;border-radius:8px;">
                                 @endif
                             </div>
                         </div>
