@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-4">
                 <div class="full_round relative_pos box_circle circle3 bott_margin_1" >
-                    <img src="img/service74x74.png">
+                    <img src="{{ asset('/assets/img/driver74x74.png') }}">
                 </div>
             </div>
             <div class="col-8 top_padd">
@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-12 bott_padd">
                     <a 
-                        href="whatsapp://send?phone={{ $data->service_advisor->phone ?? "Nama tidak tersedia" }}&text=Halo saya pemilik kendaraan {{ $data->vehicle_name }} dengan nomor polisi : {{ $data->vehicle_plat }} dan kode booking : {{ $data->booking_no }} , Apakah bapak bisa saya hubungi terkait pembayaran service saya ? " 
+                        href="whatsapp://send?phone=@isset($data->service_advisor->phone) {{ "+62".substr($data->service_advisor->phone, 1, strlen($data->service_advisor->phone)) }} @else "Telepon tidak tersedia" @endisset&text=Halo saya pemilik kendaraan {{ $data->vehicle_name }} dengan nomor polisi : {{ $data->vehicle_plat }} dan kode booking : {{ $data->booking_no }} , Apakah bapak bisa saya hubungi terkait pembayaran service saya ? " 
                         class="text-center btn_green_custom bold_font">
                         
                         <i class="fa fa-video-camera" data-unicode="f03d"></i> 
