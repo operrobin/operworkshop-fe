@@ -34,8 +34,10 @@ input[type="checkbox"]:checked {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    border-radius: 100%;
+    border-radius: 50%;
     font-size: 4vh;
+    width: 7vh;
+    height: 7vh;
 }
 
 .btn-prevnext:disabled{
@@ -47,3 +49,11 @@ input[type="checkbox"]:checked {
     max-width: 50vw;
 }
 
+
+.bg-oper-red {
+    background-color: #D60000;
+}
+
+#introduction-screen-logo{
+    height: 40px;
+}

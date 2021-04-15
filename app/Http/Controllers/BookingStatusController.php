@@ -25,6 +25,14 @@ class BookingStatusController extends Controller
     const BOOKING_CANCELED = 2;
     const WRONG_BOOKING_CODE = 3;
     const SOMETHING_WRONG = -1;
+    
+    /**
+     * @static
+     * @var string
+     * 
+     * Status URI
+     */
+    const BOOKING_STATUS_URI = '/booking-status/message?status=';
 
     /**
      * bookingStatusScreen
@@ -45,7 +53,7 @@ class BookingStatusController extends Controller
          * If Booking Uri is not found, redirect to booking page.
          */
         if(empty($resultSet)){
-            return redirect('/booking-status/message?status='.self::WRONG_BOOKING_CODE);
+            return redirect(self::BOOKING_STATUS_URI.self::WRONG_BOOKING_CODE);
         }
 
         /**
@@ -77,7 +85,7 @@ class BookingStatusController extends Controller
                     ->first();
 
         if($order == null){
-            return redirect('/booking-status/message?status='.self::WRONG_BOOKING_CODE);
+            return redirect(self::BOOKING_STATUS_URI.self::WRONG_BOOKING_CODE);
         }
 
         /**
@@ -151,10 +159,10 @@ class BookingStatusController extends Controller
             $token
         );
 
-        if($response->status == false){
-            return redirect('/booking-status/message?status='.self::SOMETHING_WRONG);
+        if(!$response->status){
+            return redirect(self::BOOKING_STATUS_URI.self::SOMETHING_WRONG);
         }else{
-            return redirect('/booking-status/message?status='.self::BOOKING_CANCELED);
+            return redirect(self::BOOKING_STATUS_URI.self::BOOKING_CANCELED);
         }
     }
 
@@ -193,7 +201,7 @@ class BookingStatusController extends Controller
 
         $service = new OperTaskServices();
 
-        return redirect('/booking-status/message?status='.self::BOOKING_DONE);
+        return redirect(self::BOOKING_STATUS_URI.self::BOOKING_DONE);
     }
 
     public function statusFallback(Request $request){

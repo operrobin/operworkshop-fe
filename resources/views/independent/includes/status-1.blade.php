@@ -23,9 +23,6 @@
             <div class="row">
                 <div class="col">
                   <h6 class="heading normal_font">DRIVER</h6>
-                    
-                 <!--<h6 class="heading normal_font">FOREMAN</h6>-->
-                
                 </div>
             </div>
             <div class="row">
@@ -47,8 +44,18 @@
                         
                         </a>
                     </div>
-                    <input type="hidden" value="{{ $oper_task->driver->user->attendance_latitude ?? 0.0 }}" id="latdriver"> 
-                    <input type="hidden" value="{{ $oper_task->driver->user->attendance_longitude ?? 0.0 }}" id="longdriver">
+
+                    <input 
+                        type="hidden" 
+                        value="{{ $oper_task->driver->user->attendance_latitude ?? $data->workshop->bengkel_lat }}" 
+                        id="latdriver" 
+                        />
+
+                    <input 
+                        type="hidden"
+                        value="{{ $oper_task->driver->user->attendance_longitude ?? $data->workshop->bengkel_long }}" 
+                        id="longdriver" 
+                        />
                 </div>
             </div>
             <div class="row">
