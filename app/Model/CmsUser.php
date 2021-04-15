@@ -10,7 +10,7 @@ class CmsUser extends Model
 
     public $timestamps = false;
 
-    protected $append = [
+    protected $appends = [
         'image_url'
     ];
 

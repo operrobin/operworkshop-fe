@@ -13,10 +13,8 @@ class PageController extends Controller
     public function splashScreen(){
         $agent = new Agent();
 
-        // if($agent->isPhone())
             return view('splash-screen/splash-screen-page-1');
 
-        // return redirect("/intro");
     }
 
     public function introductionScreen(){
@@ -37,6 +35,10 @@ class PageController extends Controller
         }
 
         return view('booking/booking');
+    }
+
+    public function tele(){
+        phpinfo();
     }
 
 

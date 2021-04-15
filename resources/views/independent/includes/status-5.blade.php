@@ -41,6 +41,18 @@
                     </div>
                 </div>
             </div>
+
+
+            @isset($data->invoice_file)
+                <div class="row my-3">
+                    <div class="col-12 bott_pad">
+                        <a target="_blank" href="{{ env('CMS_URL') . 'storage/invoice-image/' . $data->invoice_file }}" class="w-100 text-center btn_green_custom bold_font">
+                            Klik disini untuk mengunduh file Invoice
+                        </a>
+                    </div>
+                </div>
+            @endisset
+
             <div class="row">
                 <div class="col-12 bott_padd">
                     <a 

@@ -16,7 +16,8 @@
         "jenssegers/mongodb": "dev-develop",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "php-amqplib/php-amqplib": ">=2.9.0"
+        "php-amqplib/php-amqplib": ">=2.9.0",
+        "spatie/laravel-backup": "^6.15"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

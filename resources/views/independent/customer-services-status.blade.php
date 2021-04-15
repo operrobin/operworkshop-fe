@@ -183,12 +183,24 @@
 
             @break
 
+        @case(\App\Model\OperOrder::PKB_CONFIRMED)
+            
+            @include('independent/includes/status-2-3')
+
+            @break
+
 
         @case(\App\Model\OperOrder::FOREMAN_TASK)
 
             @include('independent/includes/status-4')
 
             @include('independent/includes/modal')
+
+            @break
+
+        @case(\App\Model\OperOrder::FOREMAN_TASK_DONE)
+            
+            @include('independent/includes/status-5')
 
             @break
 
