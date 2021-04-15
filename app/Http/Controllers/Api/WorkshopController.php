@@ -85,6 +85,7 @@ class WorkshopController extends Controller
          */
         $nearby_workshop = NearbyWorkshop
                         ::where('user_lat_lng', "{$request->get('lat')}, {$request->get('lng')}")
+                        ->where('created_at', '>', date(strtotime('-30 days')))
                         ->get()
                         ->first();
 
@@ -96,34 +97,38 @@ class WorkshopController extends Controller
              * If user_lat_lng is not found, create new one.
              */
             foreach($resultSet as $set){
-                $distance = (double) (
-                    $google->distanceMatrix(
-                        (object) [
-                            "lat" => $request->get('lat'),
-                            "lng" => $request->get('lng')
-                        ],
-                        (object) [
-                            "lat" => $set->bengkel_lat,
-                            "lng" => $set->bengkel_long
-                        ]
-                    )->rows[0]->elements[0]->distance->value / 1000
-                );
-    
-    
-                if($distance > (double) env('GOOGLE_MAPS_SEARCH_NEARBY_RADIUS_SETTING') || $distance > ($set->setting->maks_jarak / self::KM_TO_METER)){
-                    continue;
+
+                if(isset($set->setting)){
+                    $distance = (double) (
+                        $google->distanceMatrix(
+                            (object) [
+                                "lat" => $request->get('lat'),
+                                "lng" => $request->get('lng')
+                            ],
+                            (object) [
+                                "lat" => $set->bengkel_lat,
+                                "lng" => $set->bengkel_long
+                            ]
+                        )->rows[0]->elements[0]->distance->value / 1000
+                    );
+        
+        
+                    if($distance > (double) env('GOOGLE_MAPS_SEARCH_NEARBY_RADIUS_SETTING') 
+                        || $distance > ($set->setting->maks_jarak / self::KM_TO_METER)){
+                        continue;
+                    }
+        
+                    /**
+                     * Precaching NearbyWorkshop to MongoDB
+                     */
+                    $workshop = new NearbyWorkshop();
+                    $workshop->batch_id = ($batch_id + 1);
+                    $workshop->user_lat_lng = "{$request->get('lat')}, {$request->get('lng')}";
+                    $workshop->workshop_id = $set->id;
+                    $workshop->distance = $distance;
+                    $workshop->created_at = new \DateTime('now');
+                    $workshop->save();
                 }
-    
-                /**
-                 * Precaching NearbyWorkshop to MongoDB
-                 */
-                $workshop = new NearbyWorkshop();
-                $workshop->batch_id = ($batch_id + 1);
-                $workshop->user_lat_lng = "{$request->get('lat')}, {$request->get('lng')}";
-                $workshop->workshop_id = $set->id;
-                $workshop->distance = $distance;
-                $workshop->created_at = new \DateTime('now');
-                $workshop->save();
             }
 
             $batch_id = $batch_id + 1;
