@@ -17,6 +17,6 @@
 </script>
 
 <script 
-    src="{{ asset('/js/app.js') }}"
+    src="{{ asset('/js/app.js') }}?v={{ rand(1, 99999) }}"
     type="text/javascript">
 </script>

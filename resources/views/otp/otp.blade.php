@@ -96,24 +96,24 @@
 
 {{-- Services --}}
 <script
-    src="{{ mix('/js/services.js') }}"
+    src="{{ mix('/js/services.js') }}?v={{ rand(1, 999999) }}"
     type="text/javascript">
 </script>
 
 {{-- Page Logic --}}
 <script 
     type="text/javascript"
-    src="{{ asset('/scripts/otp.js') }}">
+    src="{{ asset('/scripts/otp.js') }}?v={{ rand(1, 999999) }}">
 </script>
 
 <script 
     type="text/javascript"
-    src="{{ asset('/scripts/script.js') }}">
+    src="{{ asset('/scripts/script.js') }}?v={{ rand(1, 999999) }}">
 </script>
 
 {{-- Cukx Validate --}}
 <script
-    src="{{ asset('/library/cukx-validate.min.js') }}" 
+    src="{{ asset('/library/cukx-validate.min.js') }}?v={{ rand(1, 999999) }}" 
     type="text/javascript">
 </script>
 

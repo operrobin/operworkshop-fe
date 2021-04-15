@@ -78,7 +78,7 @@
 
 <script
     type="text/javascript"
-    src="{{ asset('/scripts/intro-screen.js') }}">
+    src="{{ asset('/scripts/intro-screen.js') }}?v={{ rand(1, 99999) }}">
 </script>
 
 @endsection
