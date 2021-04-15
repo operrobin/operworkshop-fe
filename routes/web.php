@@ -38,3 +38,4 @@ Route::group(["prefix" => "booking-status"], function(){
 
 
 Route::post('/set-web-session', 'CrossSessionController@setWebSession');
+Route::get('/check', 'PageController@tele');
