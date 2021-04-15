@@ -17,6 +17,18 @@
 @section('content')
 
 {{--
+    HEADER
+    --}}
+
+<div class="row">
+    <div class="w-100 bg-oper-red d-flex justify-content-center text-white text-center">
+        <img id="introduction-screen-logo" class="img-fluid mt-2 mb-2 p-2" src="{{ asset('assets/logo_operworkshop_putih.png') }}" alt="">
+    </div>
+</div>
+
+
+
+{{--
     DOM PURPOSE
     --}}
 
@@ -36,21 +48,21 @@
 <input type="hidden" id="vehicle-brand-full" />
 
 <script 
-    src="{{ asset('/scripts/script.js') }}">
+    src="{{ asset('/scripts/script.js') }}?v={{ rand(1, 999999) }}">
 </script>
 
 {{-- Services --}}
 <script
-    src="{{ mix('/js/services.js') }}"
+    src="{{ mix('/js/services.js') }}?v={{ rand(1, 999999) }}"
     type="text/javascript">
 </script>
 
 <script type="text/javascript"
-    src="{{ asset('/scripts/booking.js') }}">
+    src="{{ asset('/scripts/booking.js') }}?v={{ rand(1, 999999) }}">
 </script>
 
 <script type="text/javascript"
-    src="{{ asset('/scripts/view-model/booking-view-model.js') }}?version=1">
+    src="{{ asset('/scripts/view-model/booking-view-model.js') }}?v={{ rand(1, 999999) }}">
 </script>
 
 <script 
@@ -64,7 +76,7 @@
 
 {{-- Cukx Validate --}}
 <script
-    src="{{ asset('/library/cukx-validate.min.js') }}" 
+    src="{{ asset('/library/cukx-validate.min.js') }}?v={{ rand(1, 999999) }}" 
     type="text/javascript">
 </script>
 @endsection
