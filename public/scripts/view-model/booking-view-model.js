@@ -171,7 +171,13 @@ const INFORMASI_BENGKEL_WORSKHOP_LIST_PRE_ID = `<div `;
 
 const INFORMASI_BENGKEL_INPUT_HTML = `
        " style="font-size: 13px;" class="row mx-1 my-2 card-review align-items-center">
-            <div style="height: 100px; width: 100%; background-color: lightgray;" class="col-3"></div>
+            <div style="width: 100%; background-color: lightgray;" class="col-3">
+              <img class="w-100 img-thumbnail" src="
+        `;
+
+const INFORMASI_BENGKEL_AFTER_IMAGE = `
+        " />
+            </div>
             <div class="col-6 d-block">
                 <p class="font-weight-bold ">
         `;
@@ -273,7 +279,9 @@ function loadWorkshopNearby(bengkel_type, vehicle_type){
       informasi_bengkel_workshop_list.insertAdjacentHTML(
         'beforeend',
         `<div id="w-${e.id}" onclick="selectWorkshop(this); markWorkshop(${e.id}, '${e.bengkel_name}', ${e.bengkel_lat}, ${e.bengkel_long});" aria-workshop-name="${e.bengkel_name}" aria-workshop-address="${e.bengkel_name}"`
-        + INFORMASI_BENGKEL_INPUT_HTML 
+        + INFORMASI_BENGKEL_INPUT_HTML
+        + e.workshop_picture
+        + INFORMASI_BENGKEL_AFTER_IMAGE 
         + e.bengkel_name 
         + INFORMASI_BENGKEL_APPEND_AFTER_TITLE 
         + e.bengkel_alamat 
