@@ -52,7 +52,7 @@
                         </a>
                     </div>
 
-                    <input type="hidden" value="{{ $oper_task->driver->user->attendance_latitude ?? ?? $data->workshop->bengkel_lat }}" id="latdriver" /> 
+                    <input type="hidden" value="{{ $oper_task->driver->user->attendance_latitude ?? $data->workshop->bengkel_lat }}" id="latdriver" /> 
                     <input type="hidden" value="{{ $oper_task->driver->user->attendance_longitude ?? $data->workshop->bengkel_long }}" id="longdriver" />
                     <input type="hidden" value="{{ $data->workshop->bengkel_alamat }}" id="lokasibooking"> 
                     <input type="hidden" value="{{ $data->booking_time }}" id="waktubooking"> 
